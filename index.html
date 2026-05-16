@@ -15,21 +15,28 @@
       --font-mono:'IBM Plex Mono',monospace;
     }
     body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh}
-
-    /* NAV */
-    nav{background:rgba(248,248,246,0.97);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
-    .nav-links{display:flex;gap:2rem;list-style:none}
-    .nav-links a{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s}
-    .nav-links a:hover,.nav-links a.active{color:var(--text)}
+    nav{background:rgba(248,248,246,0.97);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:200;backdrop-filter:blur(8px)}
     .nav-right{display:flex;align-items:center;gap:12px}
     .btn-sm{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:7px 16px;border-radius:3px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block}
-    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);display:flex;flex-direction:column;align-items:center;line-height:1.1}
     .btn-ghost:hover{border-color:var(--text);color:var(--text)}
     .btn-solid{background:var(--text);border:1px solid var(--text);color:#fff;font-weight:600}
     .btn-solid:hover{opacity:0.8}
-
-    /* HERO */
-    .hero{padding:4rem 2rem 3rem;border-bottom:1px solid var(--border);background:var(--bg);position:relative}
+    .hamburger{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px}
+    .hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all 0.2s}
+    .hamburger:hover span{background:var(--muted)}
+    .sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.2);z-index:300;opacity:0;pointer-events:none;transition:opacity 0.25s}
+    .sidebar-overlay.open{opacity:1;pointer-events:all}
+    .sidebar-drawer{position:fixed;top:0;left:-280px;width:280px;height:100vh;background:var(--surface);border-right:1px solid var(--border);z-index:400;transition:left 0.25s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column}
+    .sidebar-drawer.open{left:0}
+    .sidebar-top{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+    .sidebar-close{background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:18px;color:var(--muted);line-height:1}
+    .sidebar-close:hover{color:var(--text)}
+    .sidebar-nav{padding:1rem 0;flex:1}
+    .sidebar-link{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:0.9rem 1.5rem;border-bottom:1px solid var(--border);transition:all 0.15s}
+    .sidebar-link:hover,.sidebar-link.active{color:var(--text);background:var(--bg)}
+    .sidebar-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--faint);padding:1rem 1.5rem 0.5rem}
+    .hero{padding:4rem 2rem 3rem;border-bottom:1px solid var(--border);background:var(--bg)}
     .hero h1{font-family:var(--font-head);font-size:64px;font-weight:900;line-height:0.95;letter-spacing:-1px;text-transform:uppercase;max-width:700px;margin-bottom:1.5rem;color:var(--text)}
     .hero h1 em{font-style:normal}
     .hero-sub{color:var(--muted);font-size:15px;max-width:480px;margin-bottom:2rem;font-weight:300}
@@ -37,18 +44,12 @@
     .stat{border-left:2px solid var(--border);padding-left:1rem}
     .stat-val{font-family:var(--font-head);font-size:28px;font-weight:700;color:var(--text);line-height:1}
     .stat-lbl{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:3px}
-
-    /* LAYOUT */
     .main{display:grid;grid-template-columns:1fr 300px;gap:0;max-width:1200px;margin:0 auto}
     .feed{border-right:1px solid var(--border);padding:2rem}
     .sidebar{padding:2rem}
-
-    /* SECTION HEADERS */
     .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
     .section-title{font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
     .see-all{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;color:var(--text);text-decoration:none;text-transform:uppercase}
-
-    /* PICK CARDS */
     .picks-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:3rem}
     .pick-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1rem 1.25rem;cursor:pointer;transition:border-color 0.2s}
     .pick-card:hover{border-color:#aaa}
@@ -64,8 +65,6 @@
     .pick-line span{font-size:12px;color:var(--muted);display:block;text-align:right;margin-top:2px}
     .pick-tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
     .tag{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px;border:1px solid var(--border);color:var(--muted)}
-
-    /* POSTS */
     .post-card{border-top:1px solid var(--border);padding:1.25rem 0;cursor:pointer;transition:opacity 0.2s}
     .post-card:hover{opacity:0.65}
     .post-label{display:flex;align-items:center;gap:10px;margin-bottom:8px}
@@ -73,10 +72,8 @@
     .post-date{font-family:var(--font-mono);font-size:10px;color:var(--muted)}
     .post-title{font-family:var(--font-head);font-size:22px;font-weight:700;text-transform:uppercase;line-height:1.1;margin-bottom:6px;color:var(--text)}
     .post-excerpt{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6}
-    .post-footer{display:flex;align-items:center;gap:1rem;margin-top:10px;flex-wrap:wrap}
+    .post-footer{display:flex;align-items:center;gap:1rem;margin-top:10px}
     .post-stat{font-family:var(--font-mono);font-size:10px;color:var(--muted)}
-
-    /* SIDEBAR */
     .week-tracker{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.25rem;margin-bottom:2rem}
     .week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}
     .week-day{text-align:center}
@@ -86,7 +83,6 @@
     .wd-loss{background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
     .wd-push{background:var(--surface2);color:var(--muted)}
     .wd-pending{border:1px solid var(--border);color:var(--faint)}
-
     .model-chart{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.25rem}
     .mc-bars{margin-top:12px;display:flex;flex-direction:column;gap:8px}
     .mc-row{display:flex;align-items:center;gap:10px}
@@ -94,52 +90,61 @@
     .mc-track{flex:1;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;border:1px solid var(--border)}
     .mc-fill{height:100%;border-radius:3px;background:var(--text)}
     .mc-val{font-family:var(--font-mono);font-size:10px;color:var(--text);width:32px;text-align:right;flex-shrink:0}
-
-    /* FOOTER */
     footer{border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
     .footer-copy{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
     .footer-links{display:flex;gap:1.5rem;flex-wrap:wrap}
     .footer-links a{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:1px}
     .footer-links a:hover{color:var(--text)}
-
     .section-sep{height:1px;background:var(--border);margin:2rem 0}
-
-    /* RESPONSIVE */
-    @media(max-width:768px){
-      .main{grid-template-columns:1fr}
-      .feed{border-right:none}
-      .sidebar{border-top:1px solid var(--border)}
-      .hero h1{font-size:42px}
-      .nav-links{display:none}
-    }
+    @media(max-width:768px){.main{grid-template-columns:1fr}.feed{border-right:none}.sidebar{border-top:1px solid var(--border)}.hero h1{font-size:42px}}
   </style>
 </head>
 <body>
 
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+<div class="sidebar-drawer" id="drawer">
+  <div class="sidebar-top">
+    <svg height="28" viewBox="0 0 320 50" aria-label="Football Forte">
+      <style>.lcs{font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:38px;fill:#0a0a0a}</style>
+      <text x="4" y="42" class="lcs">F</text><text x="24" y="42" class="lcs">ootball</text>
+      <text x="178" y="42" class="lcs">F</text><text x="198" y="42" class="lcs">orte</text>
+      <line x1="5" y1="14" x2="268" y2="14" stroke="#0a0a0a" stroke-width="1.5"/>
+      <ellipse cx="283" cy="14" rx="15" ry="10" fill="#ffffff" stroke="#0a0a0a" stroke-width="1.5"/>
+      <line x1="268" y1="14" x2="298" y2="14" stroke="#0a0a0a" stroke-width="1"/>
+      <line x1="277" y1="8" x2="277" y2="20" stroke="#0a0a0a" stroke-width="1"/>
+      <line x1="283" y1="6" x2="283" y2="22" stroke="#0a0a0a" stroke-width="1"/>
+      <line x1="289" y1="8" x2="289" y2="20" stroke="#0a0a0a" stroke-width="1"/>
+    </svg>
+    <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+  </div>
+  <div class="sidebar-nav">
+    <div class="sidebar-label">Navigation</div>
+    <a href="index.html" class="sidebar-link active">Betting Model</a>
+    <a href="#" class="sidebar-link">Rookie Model</a>
+    <a href="#" class="sidebar-link">Dynasty Tools</a>
+    <a href="articles.html" class="sidebar-link">Articles</a>
+  </div>
+</div>
+
 <nav>
-  <svg height="36" viewBox="0 0 320 50" style="display:block;flex-shrink:0" aria-label="Football Forte">
-    <style>.lc{font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:38px;fill:#0a0a0a}</style>
-    <text x="4" y="42" class="lc">F</text>
-    <text x="24" y="42" class="lc">ootball</text>
-    <text x="178" y="42" class="lc">F</text>
-    <text x="198" y="42" class="lc">orte</text>
-    <line x1="5" y1="14" x2="268" y2="14" stroke="#0a0a0a" stroke-width="1.5"/>
-    <ellipse cx="283" cy="14" rx="15" ry="10" fill="#f8f8f6" stroke="#0a0a0a" stroke-width="1.5"/>
-    <line x1="268" y1="14" x2="298" y2="14" stroke="#0a0a0a" stroke-width="1"/>
-    <line x1="277" y1="8" x2="277" y2="20" stroke="#0a0a0a" stroke-width="1"/>
-    <line x1="283" y1="6" x2="283" y2="22" stroke="#0a0a0a" stroke-width="1"/>
-    <line x1="289" y1="8" x2="289" y2="20" stroke="#0a0a0a" stroke-width="1"/>
-  </svg>
-
-  <ul class="nav-links">
-    <li><a href="index.html" class="active">Betting Model</a></li>
-    <li><a href="#">Rookie Model</a></li>
-    <li><a href="#">Dynasty Tools</a></li>
-    <li><a href="articles.html">Articles</a></li>
-  </ul>
-
+  <div style="display:flex;align-items:center;gap:1rem">
+    <button class="hamburger" onclick="openSidebar()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <svg height="36" viewBox="0 0 320 50" style="display:block" aria-label="Football Forte">
+      <style>.lcn{font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:38px;fill:#0a0a0a}</style>
+      <text x="4" y="42" class="lcn">F</text><text x="24" y="42" class="lcn">ootball</text>
+      <text x="178" y="42" class="lcn">F</text><text x="198" y="42" class="lcn">orte</text>
+      <line x1="5" y1="14" x2="268" y2="14" stroke="#0a0a0a" stroke-width="1.5"/>
+      <ellipse cx="283" cy="14" rx="15" ry="10" fill="#f8f8f6" stroke="#0a0a0a" stroke-width="1.5"/>
+      <line x1="268" y1="14" x2="298" y2="14" stroke="#0a0a0a" stroke-width="1"/>
+      <line x1="277" y1="8" x2="277" y2="20" stroke="#0a0a0a" stroke-width="1"/>
+      <line x1="283" y1="6" x2="283" y2="22" stroke="#0a0a0a" stroke-width="1"/>
+      <line x1="289" y1="8" x2="289" y2="20" stroke="#0a0a0a" stroke-width="1"/>
+    </svg>
+  </div>
   <div class="nav-right">
-    <a href="#" class="btn-sm btn-ghost">Sign in</a>
+    <a href="#" class="btn-sm btn-ghost">Sign<br>in</a>
     <a href="#" class="btn-sm btn-solid">Join Free</a>
   </div>
 </nav>
@@ -148,33 +153,19 @@
   <h1>Football<br>Is Our<br><em>Forte</em></h1>
   <p class="hero-sub">Using numbers to predict the unpredictable game of football.</p>
   <div class="hero-stats">
-    <div class="stat">
-      <div class="stat-val" id="season-ats">63.2%</div>
-      <div class="stat-lbl">Season ATS</div>
-    </div>
-    <div class="stat">
-      <div class="stat-val" id="alltime-ats">—</div>
-      <div class="stat-lbl">All Time ATS</div>
-    </div>
-    <div class="stat">
-      <div class="stat-val" id="season-roi">—</div>
-      <div class="stat-lbl">Season ROI</div>
-    </div>
-    <div class="stat">
-      <div class="stat-val" id="alltime-roi">—</div>
-      <div class="stat-lbl">All Time ROI</div>
-    </div>
+    <div class="stat"><div class="stat-val" id="season-ats">63.2%</div><div class="stat-lbl">Season ATS</div></div>
+    <div class="stat"><div class="stat-val" id="alltime-ats">—</div><div class="stat-lbl">All Time ATS</div></div>
+    <div class="stat"><div class="stat-val" id="season-roi">—</div><div class="stat-lbl">Season ROI</div></div>
+    <div class="stat"><div class="stat-val" id="alltime-roi">—</div><div class="stat-lbl">All Time ROI</div></div>
   </div>
 </div>
 
 <div class="main">
   <div class="feed">
-
     <div class="section-head">
       <div class="section-title">Today's picks</div>
       <a href="#" class="see-all">View all →</a>
     </div>
-
     <div class="picks-grid">
       <div class="pick-card hot">
         <div class="pick-meta">
@@ -189,7 +180,6 @@
           <div class="pick-line">−110<span>Opening: −2.5</span></div>
         </div>
       </div>
-
       <div class="pick-card hot">
         <div class="pick-meta">
           <div class="pick-game">KC @ BUF · Sun 8:20 ET · NFL · Week 14</div>
@@ -203,7 +193,6 @@
           <div class="pick-line">−115<span>Opening: 47</span></div>
         </div>
       </div>
-
       <div class="pick-card">
         <div class="pick-meta">
           <div class="pick-game">LAR @ SF · Sun 1:00 ET · NFL · Week 14</div>
@@ -218,57 +207,33 @@
         </div>
       </div>
     </div>
-
     <div class="section-sep"></div>
-
     <div class="section-head">
       <div class="section-title">Latest Articles</div>
       <a href="articles.html" class="see-all">View all →</a>
     </div>
-
     <div class="post-card">
-      <div class="post-label">
-        <span class="post-type">Model update</span>
-        <span class="post-date">Dec 8, 2024</span>
-      </div>
+      <div class="post-label"><span class="post-type">Model update</span><span class="post-date">Dec 8, 2024</span></div>
       <div class="post-title">Why our EPA-weighted efficiency model has outperformed closing line value this season</div>
       <div class="post-excerpt">We rebuilt our offensive efficiency weights in week 8 and the results have been significant. This breakdown explains the methodology shift and what it means for the rest of the season.</div>
-      <div class="post-footer">
-        <span class="post-stat">6 min read</span>
-      </div>
+      <div class="post-footer"><span class="post-stat">6 min read</span></div>
     </div>
-
     <div class="post-card">
-      <div class="post-label">
-        <span class="post-type">Analysis</span>
-        <span class="post-date">Dec 7, 2024</span>
-      </div>
+      <div class="post-label"><span class="post-type">Analysis</span><span class="post-date">Dec 7, 2024</span></div>
       <div class="post-title">The Bills offensive line problem is worse than PFF grades suggest</div>
       <div class="post-excerpt">Using pressure rate, time-to-throw, and scramble frequency data to quantify how Buffalo's O-line issues should affect their spread pricing heading into playoff positioning games.</div>
-      <div class="post-footer">
-        <span class="post-stat">9 min read</span>
-      </div>
+      <div class="post-footer"><span class="post-stat">9 min read</span></div>
     </div>
-
     <div class="post-card">
-      <div class="post-label">
-        <span class="post-type">Model update</span>
-        <span class="post-date">Dec 6, 2024</span>
-      </div>
+      <div class="post-label"><span class="post-type">Model update</span><span class="post-date">Dec 6, 2024</span></div>
       <div class="post-title">Introducing our weather adjustment model — wind, temperature, and total suppression</div>
       <div class="post-excerpt">After a frustrating over loss in a surprise wind game in week 11, we built a live weather adjustment layer. Here's how it works and how to use it in your process.</div>
-      <div class="post-footer">
-        <span class="post-stat">5 min read</span>
-      </div>
+      <div class="post-footer"><span class="post-stat">5 min read</span></div>
     </div>
-
   </div>
 
   <div class="sidebar">
-
-    <div class="section-head">
-      <div class="section-title">This week</div>
-    </div>
+    <div class="section-head"><div class="section-title">This week</div></div>
     <div class="week-tracker">
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)">Week 14 record</div>
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;margin:4px 0 2px;color:var(--text)">7–3–1</div>
@@ -283,10 +248,7 @@
         <div class="week-day"><div class="wd-label">Sun</div><div class="wd-dot wd-pending">—</div></div>
       </div>
     </div>
-
-    <div class="section-head" style="margin-top:1.5rem">
-      <div class="section-title">Model performance</div>
-    </div>
+    <div class="section-head" style="margin-top:1.5rem"><div class="section-title">Model performance</div></div>
     <div class="model-chart">
       <div class="mc-bars">
         <div class="mc-row"><div class="mc-label">Spread</div><div class="mc-track"><div class="mc-fill" style="width:63%"></div></div><div class="mc-val">63%</div></div>
@@ -295,7 +257,6 @@
         <div class="mc-row"><div class="mc-label">Props</div><div class="mc-track"><div class="mc-fill" style="width:54%"></div></div><div class="mc-val">54%</div></div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -309,5 +270,15 @@
   </div>
 </footer>
 
+<script>
+  function openSidebar(){
+    document.getElementById('drawer').classList.add('open');
+    document.getElementById('overlay').classList.add('open');
+  }
+  function closeSidebar(){
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('overlay').classList.remove('open');
+  }
+</script>
 </body>
 </html>
