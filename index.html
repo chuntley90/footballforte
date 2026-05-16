@@ -96,6 +96,19 @@
     .footer-links a{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:1px}
     .footer-links a:hover{color:var(--text)}
     .section-sep{height:1px;background:var(--border);margin:2rem 0}
+    .picks-wrap{background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:2rem}
+    .picks-header{display:grid;grid-template-columns:90px 1fr 1fr 1fr 1fr;gap:0;padding:7px 10px;background:var(--surface2);border-bottom:1px solid var(--border)}
+    .picks-header span{font-family:var(--font-mono);font-size:7.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:center}
+    .picks-header span:first-child{text-align:left}
+    .pick-row{display:grid;grid-template-columns:90px 1fr 1fr 1fr 1fr;gap:0;padding:6px 10px;border-bottom:1px solid var(--border);align-items:center}
+    .pick-row:last-child{border-bottom:none}
+    .pick-row:hover{background:var(--surface2)}
+    .pick-matchup{display:flex;flex-direction:column}
+    .pick-game{font-family:var(--font-mono);font-size:8.5px;letter-spacing:0.5px;color:var(--text);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .pick-time{font-family:var(--font-mono);font-size:7.5px;color:var(--faint)}
+    .pick-val{font-family:var(--font-mono);font-size:9px;color:var(--muted);text-align:center;white-space:nowrap}
+    .pick-val.our{color:var(--text);font-weight:500}
+    .pick-day{font-family:var(--font-head);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--faint);padding:5px 10px;background:var(--surface2);border-bottom:1px solid var(--border)}
     @media(max-width:768px){.main{grid-template-columns:1fr}.feed{border-right:none}.sidebar{border-top:1px solid var(--border)}.hero h1{font-size:42px}}
   </style>
 </head>
@@ -210,28 +223,82 @@
   </div>
 
   <div class="sidebar">
-    <div class="section-head"><div class="section-title">This week</div></div>
-    <div class="week-tracker">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)">Week 14 record</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;margin:4px 0 2px;color:var(--text)">7–3–1</div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted)">+4.2 units · 70% ATS</div>
-      <div class="week-grid">
-        <div class="week-day"><div class="wd-label">Mon</div><div class="wd-dot wd-win">W</div></div>
-        <div class="week-day"><div class="wd-label">Tue</div><div class="wd-dot wd-win">W</div></div>
-        <div class="week-day"><div class="wd-label">Wed</div><div class="wd-dot wd-loss">L</div></div>
-        <div class="week-day"><div class="wd-label">Thu</div><div class="wd-dot wd-win">W</div></div>
-        <div class="week-day"><div class="wd-label">Fri</div><div class="wd-dot wd-push">P</div></div>
-        <div class="week-day"><div class="wd-label">Sat</div><div class="wd-dot wd-win">W</div></div>
-        <div class="week-day"><div class="wd-label">Sun</div><div class="wd-dot wd-pending">—</div></div>
+    <div class="section-head"><div class="section-title">Week 1 Picks:</div></div>
+    <div class="picks-wrap">
+      <div class="picks-header">
+        <span>Matchup</span>
+        <span>VG Line</span>
+        <span>Our Line</span>
+        <span>VG Total</span>
+        <span>Our Total</span>
       </div>
-    </div>
-    <div class="section-head" style="margin-top:1.5rem"><div class="section-title">Model performance</div></div>
-    <div class="model-chart">
-      <div class="mc-bars">
-        <div class="mc-row"><div class="mc-label">Spread</div><div class="mc-track"><div class="mc-fill" style="width:63%"></div></div><div class="mc-val">63%</div></div>
-        <div class="mc-row"><div class="mc-label">Total</div><div class="mc-track"><div class="mc-fill" style="width:58%"></div></div><div class="mc-val">58%</div></div>
-        <div class="mc-row"><div class="mc-label">ML</div><div class="mc-track"><div class="mc-fill" style="width:61%"></div></div><div class="mc-val">61%</div></div>
-        <div class="mc-row"><div class="mc-label">Props</div><div class="mc-track"><div class="mc-fill" style="width:54%"></div></div><div class="mc-val">54%</div></div>
+      <div class="pick-day">Wed · Sept 9</div>
+      <div class="pick-row">
+        <div class="pick-matchup"><div class="pick-game">NE @ SEA</div><div class="pick-time">8:20 PM</div></div>
+        <div class="pick-val">—</div><div class="pick-val our">—</div><div class="pick-val">—</div><div class="pick-val our">—</div>
+      </div>
+      <div class="pick-day">Thu · Sept 10</div>
+      <div class="pick-row">
+        <div class="pick-matchup"><div class="pick-game">SF vs LAR</div><div class="pick-time">8:35 PM</div></div>
+        <div class="pick-val">—</div><div class="pick-val our">—</div><div class="pick-val">—</div><div class="pick-val our">—</div>
+      </div>
+      <div class="pick-day">Sun · Sept 13</div>
+      <div class="pick-row">
+        <div class="pick-matchup"><div class="pick-game">CHI @ CAR</div><div class="pick-time">1:00 PM</div></div>
+        <div class="pick-val">—</div><div class="pick-val our">—</div><div class="pick-val">—</div><div class="pick-val our">—</div>
+      </div>
+      <div class="pick-row">
+        <div class="pick-matchup"><div class="pick-game">TB @ CIN</div><div class="pick-time">1:00 PM</div></div>
+        <div class="pick-val">—</div><div class="pick-val our">—</div><div class="pick-val">—</div><div class="pick-val our">—</div>
+      </div>
+      <div class="pick-row">
+        <div class="pick-matchup"><div class="pick-game">NO @ DET</div><div class="pick-time">1:00 PM</div></div>
+        <div class="pick-val">—</div><div class="pick-val our">—</div><div class="pick-val">—</div><div class="pick-val our">—</div>
+      </div>
+      <div class="pick-row">
+        <div class="pick-matchup"><div class="pick-game">BUF @ HOU</div><div class="pick-time">1:00 PM</div></div>
+        <div class="pick-val">—</div><div class="pick-val our">—</div><div class="pick-val">—</div><div class="pick-val our">—</div>
+      </div>
+      <div class="pick-row">
+        <div class="pick-matchup"><div class="pick-game">BAL @ IND</div><div class="pick-time">1:00 PM</div></div>
+        <div class="pick-val">—</div><div class="pick-val our">—</div><div class="pick-val">—</div><div class="pick-val our">—</div>
+      </div>
+      <div class="pick-row">
+        <div class="pick-matchup"><div class="pick-game">CLE @ JAX</div><div class="pick-time">1:00 PM</div></div>
+        <div class="pick-val">—</div><div class="pick-val our">—</div><div class="pick-val">—</div><div class="pick-val our">—</div>
+      </div>
+      <div class="pick-row">
+        <div class="pick-matchup"><div class="pick-game">ATL @ PIT</div><div class="pick-time">1:00 PM</div></div>
+        <div class="pick-val">—</div><div class="pick-val our">—</div><div class="pick-val">—</div><div class="pick-val our">—</div>
+      </div>
+      <div class="pick-row">
+        <div class="pick-matchup"><div class="pick-game">NYJ @ TEN</div><div class="pick-time">1:00 PM</div></div>
+        <div class="pick-val">—</div><div class="pick-val our">—</div><div class="pick-val">—</div><div class="pick-val our">—</div>
+      </div>
+      <div class="pick-row">
+        <div class="pick-matchup"><div class="pick-game">ARI @ LAC</div><div class="pick-time">4:25 PM</div></div>
+        <div class="pick-val">—</div><div class="pick-val our">—</div><div class="pick-val">—</div><div class="pick-val our">—</div>
+      </div>
+      <div class="pick-row">
+        <div class="pick-matchup"><div class="pick-game">MIA @ LV</div><div class="pick-time">4:25 PM</div></div>
+        <div class="pick-val">—</div><div class="pick-val our">—</div><div class="pick-val">—</div><div class="pick-val our">—</div>
+      </div>
+      <div class="pick-row">
+        <div class="pick-matchup"><div class="pick-game">GB @ MIN</div><div class="pick-time">4:25 PM</div></div>
+        <div class="pick-val">—</div><div class="pick-val our">—</div><div class="pick-val">—</div><div class="pick-val our">—</div>
+      </div>
+      <div class="pick-row">
+        <div class="pick-matchup"><div class="pick-game">WAS @ PHI</div><div class="pick-time">4:25 PM</div></div>
+        <div class="pick-val">—</div><div class="pick-val our">—</div><div class="pick-val">—</div><div class="pick-val our">—</div>
+      </div>
+      <div class="pick-row">
+        <div class="pick-matchup"><div class="pick-game">DAL @ NYG</div><div class="pick-time">8:20 PM</div></div>
+        <div class="pick-val">—</div><div class="pick-val our">—</div><div class="pick-val">—</div><div class="pick-val our">—</div>
+      </div>
+      <div class="pick-day">Mon · Sept 14</div>
+      <div class="pick-row">
+        <div class="pick-matchup"><div class="pick-game">DEN @ KC</div><div class="pick-time">8:15 PM</div></div>
+        <div class="pick-val">—</div><div class="pick-val our">—</div><div class="pick-val">—</div><div class="pick-val our">—</div>
       </div>
     </div>
   </div>
