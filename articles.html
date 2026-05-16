@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Articles — Football Forte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=IBM+Plex+Mono:wght@400;500&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#f8f8f6;--surface:#ffffff;--surface2:#f2f2f0;--border:#e0e0dc;
+      --text:#0a0a0a;--muted:#888880;--faint:#c8c8c4;
+      --font-head:'Barlow Condensed',sans-serif;
+      --font-body:'Barlow',sans-serif;
+      --font-mono:'IBM Plex Mono',monospace;
+    }
+    body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh}
+
+    /* NAV */
+    nav{background:rgba(248,248,246,0.97);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+    .nav-links{display:flex;gap:2rem;list-style:none}
+    .nav-links a{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s}
+    .nav-links a:hover,.nav-links a.active{color:var(--text)}
+    .nav-right{display:flex;align-items:center;gap:12px}
+    .btn-sm{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:7px 16px;border-radius:3px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block}
+    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+    .btn-ghost:hover{border-color:var(--text);color:var(--text)}
+    .btn-solid{background:var(--text);border:1px solid var(--text);color:#fff;font-weight:600}
+    .btn-solid:hover{opacity:0.8}
+
+    /* PAGE HEADER */
+    .page-header{padding:3rem 2rem 2rem;border-bottom:1px solid var(--border);max-width:1200px;margin:0 auto}
+    .page-title{font-family:var(--font-head);font-size:52px;font-weight:900;text-transform:uppercase;letter-spacing:-1px;line-height:1;margin-bottom:0.5rem}
+    .page-sub{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+
+    /* FILTER TABS */
+    .filter-bar{padding:1.25rem 2rem;border-bottom:1px solid var(--border);max-width:1200px;margin:0 auto;display:flex;gap:1rem;flex-wrap:wrap}
+    .filter-btn{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:6px 14px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.2s}
+    .filter-btn:hover{border-color:var(--text);color:var(--text)}
+    .filter-btn.active{background:var(--text);border-color:var(--text);color:#fff}
+
+    /* MAIN CONTENT */
+    .content{max-width:1200px;margin:0 auto;padding:2rem}
+
+    /* CATEGORY SECTION */
+    .category-section{margin-bottom:3.5rem}
+    .category-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border)}
+    .category-title{font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+    .category-count{font-family:var(--font-mono);font-size:10px;color:var(--faint)}
+
+    /* ARTICLE GRID */
+    .article-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+    .article-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.5rem;cursor:pointer;transition:border-color 0.2s;display:flex;flex-direction:column}
+    .article-card:hover{border-color:#aaa}
+    .article-card.featured{grid-column:span 2;flex-direction:row;gap:2rem;align-items:flex-start}
+    .article-card-body{flex:1}
+    .article-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid var(--border);color:var(--muted);display:inline-block;margin-bottom:0.75rem}
+    .article-title{font-family:var(--font-head);font-size:20px;font-weight:700;text-transform:uppercase;line-height:1.1;margin-bottom:0.5rem;color:var(--text)}
+    .article-card.featured .article-title{font-size:26px}
+    .article-excerpt{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:1rem;flex:1}
+    .article-meta{display:flex;align-items:center;gap:1rem;margin-top:auto}
+    .article-date{font-family:var(--font-mono);font-size:10px;color:var(--muted)}
+    .article-read{font-family:var(--font-mono);font-size:10px;color:var(--faint)}
+    .article-divider{width:1px;height:12px;background:var(--border)}
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .article-grid{grid-template-columns:repeat(2,1fr)}
+      .article-card.featured{grid-column:span 2;flex-direction:column}
+    }
+    @media(max-width:600px){
+      .article-grid{grid-template-columns:1fr}
+      .article-card.featured{grid-column:span 1}
+      .nav-links{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">
+    <svg height="36" viewBox="0 0 320 50" style="display:block;flex-shrink:0" aria-label="Football Forte">
+      <style>.lc{font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:38px;fill:#0a0a0a}</style>
+      <text x="4" y="42" class="lc">F</text>
+      <text x="24" y="42" class="lc">ootball</text>
+      <text x="178" y="42" class="lc">F</text>
+      <text x="198" y="42" class="lc">orte</text>
+      <line x1="5" y1="14" x2="268" y2="14" stroke="#0a0a0a" stroke-width="1.5"/>
+      <ellipse cx="283" cy="14" rx="15" ry="10" fill="#f8f8f6" stroke="#0a0a0a" stroke-width="1.5"/>
+      <line x1="268" y1="14" x2="298" y2="14" stroke="#0a0a0a" stroke-width="1"/>
+      <line x1="277" y1="8" x2="277" y2="20" stroke="#0a0a0a" stroke-width="1"/>
+      <line x1="283" y1="6" x2="283" y2="22" stroke="#0a0a0a" stroke-width="1"/>
+      <line x1="289" y1="8" x2="289" y2="20" stroke="#0a0a0a" stroke-width="1"/>
+    </svg>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Betting Model</a></li>
+    <li><a href="#">Rookie Model</a></li>
+    <li><a href="#">Dynasty Tools</a></li>
+    <li><a href="articles.html" class="active">Articles</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="#" class="btn-sm btn-ghost">Sign in</a>
+    <a href="#" class="btn-sm btn-solid">Join Free</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-title">Articles</div>
+  <div class="page-sub">Model updates, analysis, and breakdowns — newest first</div>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active">All</button>
+  <button class="filter-btn">Model Update</button>
+  <button class="filter-btn">Analysis</button>
+  <button class="filter-btn">Betting</button>
+  <button class="filter-btn">Dynasty</button>
+  <button class="filter-btn">Rookie</button>
+</div>
+
+<div class="content">
+
+  <!-- MODEL UPDATES -->
+  <div class="category-section" data-category="Model Update">
+    <div class="category-header">
+      <div class="category-title">Model Updates</div>
+      <div class="category-count">3 articles</div>
+    </div>
+    <div class="article-grid">
+
+      <div class="article-card featured">
+        <div class="article-card-body">
+          <span class="article-tag">Model Update</span>
+          <div class="article-title">Why our EPA-weighted efficiency model has outperformed closing line value this season</div>
+          <div class="article-excerpt">We rebuilt our offensive efficiency weights in week 8 and the results have been significant. This breakdown explains the methodology shift, what changed in our weighting system, and what it means for the rest of the season.</div>
+          <div class="article-meta">
+            <span class="article-date">Dec 8, 2024</span>
+            <div class="article-divider"></div>
+            <span class="article-read">6 min read</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card">
+        <span class="article-tag">Model Update</span>
+        <div class="article-title">Introducing our weather adjustment model</div>
+        <div class="article-excerpt">After a frustrating over loss in a surprise wind game in week 11, we built a live weather adjustment layer covering wind, temperature, and total suppression.</div>
+        <div class="article-meta">
+          <span class="article-date">Dec 6, 2024</span>
+          <div class="article-divider"></div>
+          <span class="article-read">5 min read</span>
+        </div>
+      </div>
+
+      <div class="article-card">
+        <span class="article-tag">Model Update</span>
+        <div class="article-title">How we handle bye week carry-over in our power ratings</div>
+        <div class="article-excerpt">Bye weeks create a data gap that most models handle poorly. Here's our approach to projecting rest-adjusted performance heading into the back half of the season.</div>
+        <div class="article-meta">
+          <span class="article-date">Nov 22, 2024</span>
+          <div class="article-divider"></div>
+          <span class="article-read">4 min read</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ANALYSIS -->
+  <div class="category-section" data-category="Analysis">
+    <div class="category-header">
+      <div class="category-title">Analysis</div>
+      <div class="category-count">3 articles</div>
+    </div>
+    <div class="article-grid">
+
+      <div class="article-card featured">
+        <div class="article-card-body">
+          <span class="article-tag">Analysis</span>
+          <div class="article-title">The Bills offensive line problem is worse than PFF grades suggest</div>
+          <div class="article-excerpt">Using pressure rate, time-to-throw, and scramble frequency data to quantify how Buffalo's O-line issues should affect their spread pricing heading into playoff positioning games.</div>
+          <div class="article-meta">
+            <span class="article-date">Dec 7, 2024</span>
+            <div class="article-divider"></div>
+            <span class="article-read">9 min read</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card">
+        <span class="article-tag">Analysis</span>
+        <div class="article-title">Why home field advantage is worth less in 2024</div>
+        <div class="article-excerpt">Stadium noise, travel distance, and schedule strength all feed into home field edge. This season the data tells a different story than the market is pricing.</div>
+        <div class="article-meta">
+          <span class="article-date">Nov 30, 2024</span>
+          <div class="article-divider"></div>
+          <span class="article-read">7 min read</span>
+        </div>
+      </div>
+
+      <div class="article-card">
+        <span class="article-tag">Analysis</span>
+        <div class="article-title">Divisional games and the closing line — what the data says</div>
+        <div class="article-excerpt">Divisional familiarity compresses point spreads. We looked at five years of divisional game data to quantify the effect and how to use it in your process.</div>
+        <div class="article-meta">
+          <span class="article-date">Nov 18, 2024</span>
+          <div class="article-divider"></div>
+          <span class="article-read">6 min read</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BETTING -->
+  <div class="category-section" data-category="Betting">
+    <div class="category-header">
+      <div class="category-title">Betting</div>
+      <div class="category-count">2 articles</div>
+    </div>
+    <div class="article-grid">
+
+      <div class="article-card">
+        <span class="article-tag">Betting</span>
+        <div class="article-title">Line shopping 101 — why closing line value matters more than results</div>
+        <div class="article-excerpt">Short-term results are noisy. Beating the closing line consistently is the only reliable signal of long-term edge. Here's how to track it.</div>
+        <div class="article-meta">
+          <span class="article-date">Nov 10, 2024</span>
+          <div class="article-divider"></div>
+          <span class="article-read">5 min read</span>
+        </div>
+      </div>
+
+      <div class="article-card">
+        <span class="article-tag">Betting</span>
+        <div class="article-title">Bankroll management for the NFL season — a practical guide</div>
+        <div class="article-excerpt">Flat betting, Kelly criterion, or fractional Kelly — we break down which approach fits which bettor and how to size your bets relative to your model's confidence.</div>
+        <div class="article-meta">
+          <span class="article-date">Sep 5, 2024</span>
+          <div class="article-divider"></div>
+          <span class="article-read">8 min read</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div style="border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto">
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">© 2025 footballforte.com — For entertainment purposes</div>
+  <div style="display:flex;gap:1.5rem">
+    <a href="#" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:1px">Discord</a>
+    <a href="#" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:1px">Twitter / X</a>
+    <a href="#" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:1px">Methodology</a>
+  </div>
+</div>
+
+<script>
+  // Filter functionality
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const categorySections = document.querySelectorAll('.category-section');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.textContent.trim();
+
+      categorySections.forEach(section => {
+        if (filter === 'All' || section.dataset.category === filter) {
+          section.style.display = 'block';
+        } else {
+          section.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
