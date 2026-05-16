@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Football Forte — Data-Driven Football Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=IBM+Plex+Mono:wght@400;500&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#f8f8f6;--surface:#ffffff;--surface2:#f2f2f0;--border:#e0e0dc;
+      --text:#0a0a0a;--muted:#888880;--faint:#c8c8c4;
+      --font-head:'Barlow Condensed',sans-serif;
+      --font-body:'Barlow',sans-serif;
+      --font-mono:'IBM Plex Mono',monospace;
+    }
+    body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh}
+
+    /* NAV */
+    nav{background:rgba(248,248,246,0.97);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+    .nav-links{display:flex;gap:2rem;list-style:none}
+    .nav-links a{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s}
+    .nav-links a:hover,.nav-links a.active{color:var(--text)}
+    .nav-right{display:flex;align-items:center;gap:12px}
+    .btn-sm{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:7px 16px;border-radius:3px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block}
+    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+    .btn-ghost:hover{border-color:var(--text);color:var(--text)}
+    .btn-solid{background:var(--text);border:1px solid var(--text);color:#fff;font-weight:600}
+    .btn-solid:hover{opacity:0.8}
+
+    /* HERO */
+    .hero{padding:4rem 2rem 3rem;border-bottom:1px solid var(--border);background:var(--bg);position:relative}
+    .hero-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+    .live-dot{width:6px;height:6px;border-radius:50%;background:#111;animation:pulse 1.5s infinite;display:inline-block}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.25}}
+    .hero h1{font-family:var(--font-head);font-size:64px;font-weight:900;line-height:0.95;letter-spacing:-1px;text-transform:uppercase;max-width:700px;margin-bottom:1.5rem;color:var(--text)}
+    .hero h1 em{font-style:normal}
+    .hero-sub{color:var(--muted);font-size:15px;max-width:480px;margin-bottom:2rem;font-weight:300}
+    .hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap}
+    .stat{border-left:2px solid var(--border);padding-left:1rem}
+    .stat-val{font-family:var(--font-head);font-size:28px;font-weight:700;color:var(--text);line-height:1}
+    .stat-lbl{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:3px}
+
+    /* LAYOUT */
+    .main{display:grid;grid-template-columns:1fr 300px;gap:0;max-width:1200px;margin:0 auto}
+    .feed{border-right:1px solid var(--border);padding:2rem}
+    .sidebar{padding:2rem}
+
+    /* SECTION HEADERS */
+    .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+    .section-title{font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+    .see-all{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;color:var(--text);text-decoration:none;text-transform:uppercase}
+
+    /* PICK CARDS */
+    .picks-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:3rem}
+    .pick-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1rem 1.25rem;cursor:pointer;transition:border-color 0.2s}
+    .pick-card:hover{border-color:#aaa}
+    .pick-card.hot{border-left:3px solid var(--text)}
+    .pick-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .pick-game{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+    .pick-conf{font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:2px}
+    .conf-high{background:#f0f0ee;color:var(--text);border:1px solid var(--border)}
+    .conf-mid{background:#f0f0ee;color:var(--muted);border:1px solid var(--border)}
+    .pick-main{display:flex;align-items:flex-end;justify-content:space-between}
+    .pick-title{font-family:var(--font-head);font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text)}
+    .pick-line{font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--text)}
+    .pick-line span{font-size:12px;color:var(--muted);display:block;text-align:right;margin-top:2px}
+    .pick-tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+    .tag{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px;border:1px solid var(--border);color:var(--muted)}
+
+    /* POSTS */
+    .post-card{border-top:1px solid var(--border);padding:1.25rem 0;cursor:pointer;transition:opacity 0.2s}
+    .post-card:hover{opacity:0.65}
+    .post-label{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .post-type{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid var(--border);color:var(--muted)}
+    .post-date{font-family:var(--font-mono);font-size:10px;color:var(--muted)}
+    .post-title{font-family:var(--font-head);font-size:22px;font-weight:700;text-transform:uppercase;line-height:1.1;margin-bottom:6px;color:var(--text)}
+    .post-excerpt{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6}
+    .post-footer{display:flex;align-items:center;gap:1rem;margin-top:10px;flex-wrap:wrap}
+    .post-author{font-family:var(--font-mono);font-size:10px;color:var(--muted)}
+    .post-stat{font-family:var(--font-mono);font-size:10px;color:var(--muted)}
+
+    /* SIDEBAR */
+    .week-tracker{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.25rem;margin-bottom:2rem}
+    .week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}
+    .week-day{text-align:center}
+    .wd-label{font-family:var(--font-mono);font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+    .wd-dot{width:28px;height:28px;border-radius:3px;margin:0 auto;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:9px;font-weight:500}
+    .wd-win{background:#111;color:#fff}
+    .wd-loss{background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
+    .wd-push{background:var(--surface2);color:var(--muted)}
+    .wd-pending{border:1px solid var(--border);color:var(--faint)}
+
+    .model-chart{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.25rem}
+    .mc-bars{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+    .mc-row{display:flex;align-items:center;gap:10px}
+    .mc-label{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);width:60px;flex-shrink:0}
+    .mc-track{flex:1;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;border:1px solid var(--border)}
+    .mc-fill{height:100%;border-radius:3px;background:var(--text)}
+    .mc-val{font-family:var(--font-mono);font-size:10px;color:var(--text);width:32px;text-align:right;flex-shrink:0}
+
+    /* FOOTER */
+    footer{border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+    .footer-copy{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+    .footer-links{display:flex;gap:1.5rem;flex-wrap:wrap}
+    .footer-links a{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:1px}
+    .footer-links a:hover{color:var(--text)}
+
+    .section-sep{height:1px;background:var(--border);margin:2rem 0}
+
+    /* RESPONSIVE */
+    @media(max-width:768px){
+      .main{grid-template-columns:1fr}
+      .feed{border-right:none}
+      .sidebar{border-top:1px solid var(--border)}
+      .hero h1{font-size:42px}
+      .nav-links{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <!-- LOGO -->
+  <svg height="36" viewBox="0 0 320 50" style="display:block;flex-shrink:0" aria-label="Football Forte">
+    <style>
+      .lc{font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:38px;fill:#0a0a0a}
+    </style>
+    <text x="4" y="42" class="lc">F</text>
+    <text x="24" y="42" class="lc">ootball</text>
+    <text x="178" y="42" class="lc">F</text>
+    <text x="198" y="42" class="lc">orte</text>
+    <line x1="5" y1="14" x2="268" y2="14" stroke="#0a0a0a" stroke-width="1.5"/>
+    <ellipse cx="283" cy="14" rx="15" ry="10" fill="#f8f8f6" stroke="#0a0a0a" stroke-width="1.5"/>
+    <line x1="268" y1="14" x2="298" y2="14" stroke="#0a0a0a" stroke-width="1"/>
+    <line x1="277" y1="8" x2="277" y2="20" stroke="#0a0a0a" stroke-width="1"/>
+    <line x1="283" y1="6" x2="283" y2="22" stroke="#0a0a0a" stroke-width="1"/>
+    <line x1="289" y1="8" x2="289" y2="20" stroke="#0a0a0a" stroke-width="1"/>
+  </svg>
+
+  <ul class="nav-links">
+    <li><a href="#" class="active">Betting Model</a></li>
+    <li><a href="#">Rookie Model</a></li>
+    <li><a href="#">Dynasty Tools</a></li>
+    <li><a href="#">Articles</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <a href="#" class="btn-sm btn-ghost">Sign in</a>
+    <a href="#" class="btn-sm btn-solid">Join Free</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow"><span class="live-dot"></span> Week 14 — Live picks active</div>
+  <h1>Data-Driven<br><em>Football</em><br>Intelligence</h1>
+  <p class="hero-sub">Quantitative picks, model breakdowns, and community analysis. No noise — just edge.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-val">63.2%</div><div class="stat-lbl">Season ATS</div></div>
+    <div class="stat"><div class="stat-val">+18.4u</div><div class="stat-lbl">Units profit</div></div>
+    <div class="stat"><div class="stat-val">214</div><div class="stat-lbl">Picks graded</div></div>
+    <div class="stat"><div class="stat-val">41</div><div class="stat-lbl">Contributors</div></div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="feed">
+
+    <div class="section-head">
+      <div class="section-title">Today's picks</div>
+      <a href="#" class="see-all">View all →</a>
+    </div>
+
+    <div class="picks-grid">
+      <div class="pick-card hot">
+        <div class="pick-meta">
+          <div class="pick-game">PHI @ DAL · Sun 4:25 ET · NFL · Week 14</div>
+          <div class="pick-conf conf-high">High confidence</div>
+        </div>
+        <div class="pick-main">
+          <div>
+            <div class="pick-title">Eagles −3.5</div>
+            <div class="pick-tags"><span class="tag">Spread</span><span class="tag">Model pick</span><span class="tag">Line value</span></div>
+          </div>
+          <div class="pick-line">−110<span>Opening: −2.5</span></div>
+        </div>
+      </div>
+
+      <div class="pick-card hot">
+        <div class="pick-meta">
+          <div class="pick-game">KC @ BUF · Sun 8:20 ET · NFL · Week 14</div>
+          <div class="pick-conf conf-high">High confidence</div>
+        </div>
+        <div class="pick-main">
+          <div>
+            <div class="pick-title">Over 48.5</div>
+            <div class="pick-tags"><span class="tag">Total</span><span class="tag">Weather adj.</span><span class="tag">Model pick</span></div>
+          </div>
+          <div class="pick-line">−115<span>Opening: 47</span></div>
+        </div>
+      </div>
+
+      <div class="pick-card">
+        <div class="pick-meta">
+          <div class="pick-game">LAR @ SF · Sun 1:00 ET · NFL · Week 14</div>
+          <div class="pick-conf conf-mid">Medium confidence</div>
+        </div>
+        <div class="pick-main">
+          <div>
+            <div class="pick-title">49ers ML</div>
+            <div class="pick-tags"><span class="tag">Moneyline</span><span class="tag">Community</span></div>
+          </div>
+          <div class="pick-line">−145<span>Community pick</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-sep"></div>
+
+    <div class="section-head">
+      <div class="section-title">Latest analysis</div>
+      <a href="#" class="see-all">View all →</a>
+    </div>
+
+    <div class="post-card">
+      <div class="post-label">
+        <span class="post-type">Model update</span>
+        <span class="post-date">Dec 8, 2024</span>
+      </div>
+      <div class="post-title">Why our EPA-weighted efficiency model has outperformed closing line value this season</div>
+      <div class="post-excerpt">We rebuilt our offensive efficiency weights in week 8 and the results have been significant. This breakdown explains the methodology shift and what it means for the rest of the season.</div>
+      <div class="post-footer">
+        <span class="post-author">by @qb_models</span>
+        <span class="post-stat">6 min read</span>
+        <span class="post-stat">↑ 142 votes</span>
+      </div>
+    </div>
+
+    <div class="post-card">
+      <div class="post-label">
+        <span class="post-type">Analysis</span>
+        <span class="post-date">Dec 7, 2024</span>
+      </div>
+      <div class="post-title">The Bills offensive line problem is worse than PFF grades suggest</div>
+      <div class="post-excerpt">Using pressure rate, time-to-throw, and scramble frequency data to quantify how Buffalo's O-line issues should affect their spread pricing heading into playoff positioning games.</div>
+      <div class="post-footer">
+        <span class="post-author">by @the_sharps</span>
+        <span class="post-stat">9 min read</span>
+        <span class="post-stat">↑ 98 votes</span>
+      </div>
+    </div>
+
+    <div class="post-card">
+      <div class="post-label">
+        <span class="post-type">Model update</span>
+        <span class="post-date">Dec 6, 2024</span>
+      </div>
+      <div class="post-title">Introducing our weather adjustment model — wind, temperature, and total suppression</div>
+      <div class="post-excerpt">After a frustrating over loss in a surprise wind game in week 11, we built a live weather adjustment layer. Here's how it works and how to use it in your process.</div>
+      <div class="post-footer">
+        <span class="post-author">by @footballforte_staff</span>
+        <span class="post-stat">5 min read</span>
+        <span class="post-stat">↑ 211 votes</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sidebar">
+
+    <div class="section-head">
+      <div class="section-title">This week</div>
+    </div>
+    <div class="week-tracker">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)">Week 14 record</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;margin:4px 0 2px;color:var(--text)">7–3–1</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted)">+4.2 units · 70% ATS</div>
+      <div class="week-grid">
+        <div class="week-day"><div class="wd-label">Mon</div><div class="wd-dot wd-win">W</div></div>
+        <div class="week-day"><div class="wd-label">Tue</div><div class="wd-dot wd-win">W</div></div>
+        <div class="week-day"><div class="wd-label">Wed</div><div class="wd-dot wd-loss">L</div></div>
+        <div class="week-day"><div class="wd-label">Thu</div><div class="wd-dot wd-win">W</div></div>
+        <div class="week-day"><div class="wd-label">Fri</div><div class="wd-dot wd-push">P</div></div>
+        <div class="week-day"><div class="wd-label">Sat</div><div class="wd-dot wd-win">W</div></div>
+        <div class="week-day"><div class="wd-label">Sun</div><div class="wd-dot wd-pending">—</div></div>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-top:1.5rem">
+      <div class="section-title">Model performance</div>
+    </div>
+    <div class="model-chart">
+      <div class="mc-bars">
+        <div class="mc-row"><div class="mc-label">Spread</div><div class="mc-track"><div class="mc-fill" style="width:63%"></div></div><div class="mc-val">63%</div></div>
+        <div class="mc-row"><div class="mc-label">Total</div><div class="mc-track"><div class="mc-fill" style="width:58%"></div></div><div class="mc-val">58%</div></div>
+        <div class="mc-row"><div class="mc-label">ML</div><div class="mc-track"><div class="mc-fill" style="width:61%"></div></div><div class="mc-val">61%</div></div>
+        <div class="mc-row"><div class="mc-label">Props</div><div class="mc-track"><div class="mc-fill" style="width:54%"></div></div><div class="mc-val">54%</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-copy">© 2025 footballforte.com — For entertainment purposes</div>
+  <div class="footer-links">
+    <a href="#">Discord</a>
+    <a href="#">Twitter / X</a>
+    <a href="#">Methodology</a>
+    <a href="#">API</a>
+  </div>
+</footer>
+
+</body>
+</html>
