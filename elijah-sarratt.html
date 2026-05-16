@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elijah Sarratt — Rookie Profile | Football Forte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=IBM+Plex+Mono:wght@400;500&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#f8f8f6;--surface:#ffffff;--surface2:#f2f2f0;--border:#e0e0dc;
+      --text:#0a0a0a;--muted:#888880;--faint:#c8c8c4;
+      --font-head:'Barlow Condensed',sans-serif;
+      --font-body:'Barlow',sans-serif;
+      --font-mono:'IBM Plex Mono',monospace;
+    }
+    body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh}
+    nav{background:rgba(248,248,246,0.97);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:200;backdrop-filter:blur(8px)}
+    .nav-right{display:flex;align-items:center;gap:12px}
+    .btn-sm{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:7px 16px;border-radius:3px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block}
+    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);display:flex;flex-direction:column;align-items:center;line-height:1.1}
+    .btn-ghost:hover{border-color:var(--text);color:var(--text)}
+    .btn-solid{background:var(--text);border:1px solid var(--text);color:#fff;font-weight:600}
+    .btn-solid:hover{opacity:0.8}
+    .hamburger{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px}
+    .hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px}
+    .sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.2);z-index:300;opacity:0;pointer-events:none;transition:opacity 0.25s}
+    .sidebar-overlay.open{opacity:1;pointer-events:all}
+    .sidebar-drawer{position:fixed;top:0;left:-280px;width:280px;height:100vh;background:var(--surface);border-right:1px solid var(--border);z-index:400;transition:left 0.25s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column}
+    .sidebar-drawer.open{left:0}
+    .sidebar-top{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+    .sidebar-close{background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:18px;color:var(--muted);line-height:1}
+    .sidebar-close:hover{color:var(--text)}
+    .sidebar-nav{padding:1rem 0;flex:1}
+    .sidebar-link{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:0.9rem 1.5rem;border-bottom:1px solid var(--border);transition:all 0.15s}
+    .sidebar-link:hover,.sidebar-link.active{color:var(--text);background:var(--bg)}
+    .sidebar-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--faint);padding:1rem 1.5rem 0.5rem}
+    .article-wrap{max-width:740px;margin:0 auto;padding:3rem 2rem 5rem}
+    .back-link{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;gap:6px;margin-bottom:2.5rem;transition:color 0.2s}
+    .back-link:hover{color:var(--text)}
+    .article-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid var(--border);color:var(--muted);display:inline-block;margin-bottom:1rem}
+    .article-title{font-family:var(--font-head);font-size:52px;font-weight:900;text-transform:uppercase;line-height:0.95;letter-spacing:-1px;margin-bottom:0.5rem;color:var(--text)}
+    .article-subtitle{font-family:var(--font-head);font-size:22px;font-weight:300;text-transform:uppercase;color:var(--muted);margin-bottom:2.5rem;letter-spacing:1px;border-bottom:1px solid var(--border);padding-bottom:1.5rem}
+    .score-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2.5rem}
+    .score-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.25rem}
+    .score-card.highlight{border-left:3px solid var(--text)}
+    .score-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem}
+    .score-val{font-family:var(--font-head);font-size:42px;font-weight:900;line-height:1;color:var(--text)}
+    .article-body{font-size:16px;line-height:1.8;color:var(--text)}
+    .article-body p{margin-bottom:1.5rem;font-weight:300}
+    .article-body h2{font-family:var(--font-head);font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin:2.5rem 0 1rem;padding-top:2rem;border-top:1px solid var(--border)}
+    .article-body ul{list-style:none;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.5rem}
+    .article-body ul li{font-size:15px;font-weight:300;color:var(--text);padding-left:1.25rem;position:relative}
+    .article-body ul li::before{content:'·';position:absolute;left:0;color:var(--muted);font-family:var(--font-mono)}
+    footer{border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+    .footer-copy{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+    .footer-links{display:flex;gap:1.5rem}
+    .footer-links a{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:1px}
+    .footer-links a:hover{color:var(--text)}
+    @media(max-width:600px){.article-title{font-size:38px}.score-cards{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+<div class="sidebar-drawer" id="drawer">
+  <div class="sidebar-top">
+    <svg height="28" viewBox="0 0 320 50" aria-label="Football Forte">
+      <style>.lcs{font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:38px;fill:#0a0a0a}</style>
+      <text x="4" y="42" class="lcs">F</text><text x="24" y="42" class="lcs">ootball</text>
+      <text x="178" y="42" class="lcs">F</text><text x="198" y="42" class="lcs">orte</text>
+      <line x1="5" y1="14" x2="268" y2="14" stroke="#0a0a0a" stroke-width="1.5"/>
+      <ellipse cx="283" cy="14" rx="15" ry="10" fill="#ffffff" stroke="#0a0a0a" stroke-width="1.5"/>
+      <line x1="268" y1="14" x2="298" y2="14" stroke="#0a0a0a" stroke-width="1"/>
+      <line x1="277" y1="8" x2="277" y2="20" stroke="#0a0a0a" stroke-width="1"/>
+      <line x1="283" y1="6" x2="283" y2="22" stroke="#0a0a0a" stroke-width="1"/>
+      <line x1="289" y1="8" x2="289" y2="20" stroke="#0a0a0a" stroke-width="1"/>
+    </svg>
+    <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+  </div>
+  <div class="sidebar-nav">
+    <div class="sidebar-label">Navigation</div>
+    <a href="index.html" class="sidebar-link">Betting Model</a>
+    <a href="#" class="sidebar-link">Rookie Model</a>
+    <a href="#" class="sidebar-link">Dynasty Tools</a>
+    <a href="articles.html" class="sidebar-link active">Articles</a>
+  </div>
+</div>
+
+<nav>
+  <div style="display:flex;align-items:center;gap:1rem">
+    <button class="hamburger" onclick="openSidebar()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <svg height="36" viewBox="0 0 320 50" style="display:block" aria-label="Football Forte">
+      <style>.lcn{font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:38px;fill:#0a0a0a}</style>
+      <text x="4" y="42" class="lcn">F</text><text x="24" y="42" class="lcn">ootball</text>
+      <text x="178" y="42" class="lcn">F</text><text x="198" y="42" class="lcn">orte</text>
+      <line x1="5" y1="14" x2="268" y2="14" stroke="#0a0a0a" stroke-width="1.5"/>
+      <ellipse cx="283" cy="14" rx="15" ry="10" fill="#f8f8f6" stroke="#0a0a0a" stroke-width="1.5"/>
+      <line x1="268" y1="14" x2="298" y2="14" stroke="#0a0a0a" stroke-width="1"/>
+      <line x1="277" y1="8" x2="277" y2="20" stroke="#0a0a0a" stroke-width="1"/>
+      <line x1="283" y1="6" x2="283" y2="22" stroke="#0a0a0a" stroke-width="1"/>
+      <line x1="289" y1="8" x2="289" y2="20" stroke="#0a0a0a" stroke-width="1"/>
+    </svg>
+  </div>
+  <div class="nav-right">
+    <a href="#" class="btn-sm btn-ghost">Sign<br>in</a>
+    <a href="#" class="btn-sm btn-solid">Join Free</a>
+  </div>
+</nav>
+
+<div class="article-wrap">
+  <a href="articles.html" class="back-link">← Back to articles</a>
+
+  <span class="article-tag">Rookie Profile · 2026 · WR</span>
+  <div class="article-title">Elijah Sarratt</div>
+  <div class="article-subtitle">Wide Receiver</div>
+
+  <div class="score-cards">
+    <div class="score-card highlight">
+      <div class="score-label">Pre-Draft Score</div>
+      <div class="score-val">47.3</div>
+    </div>
+    <div class="score-card highlight">
+      <div class="score-label">Prospect Score</div>
+      <div class="score-val">43.8</div>
+    </div>
+  </div>
+
+  <div class="article-body">
+
+    <p>The chemistry between Elijah Sarratt and Mendoza was something special this past season. The two clearly had an understanding of where the ball should go during the play and what simple adjustment Sarratt would make during his route. Sarratt isn't a separator in the traditional sense, but he repeatedly came down with contested catches and fade balls like his life depended on it. Opponents also had to respect Indiana's run game so much that he was consistently able to take advantage of the cushion defenders gave him in RPO concepts. His hands are excellent, and he is exceptionally crafty in the red zone.</p>
+
+    <p>Our model likes Sarratt quite a bit, there are no glaring weaknesses from a numbers perspective. Even with 3rd round projected draft capital he will still end up as a top 5 or 6 receiver in this class. To help make an early impact in the NFL, Sarratt will need to establish that he can handle press coverage on the outside and get route timings down with his new quarterback. Sarratt's ADP will vary quite a bit depending on what situation he is drafted into and what your league mates see in him.</p>
+
+    <h2>Film Notes</h2>
+
+    <ul>
+      <li>Does not separate at a high level, there is a reason most of his highlight plays are contested catch scenarios</li>
+      <li>His route running is fine, he just lacks the athleticism necessary to get open against high level competition</li>
+      <li>Does not offer a ton after the catch, won't be making anyone miss</li>
+      <li>Was excellent in the red zone this past year, he is super savvy and finds ways to come down with the ball in the end zone</li>
+      <li>I don't want to discredit his affinity for coming down with contested catches, it is certainly a skill. But that is a hard way to make a living in the NFL and there is no guarantee that he will have the same chemistry with his new QB that he did with Mendoza</li>
+    </ul>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-copy">© 2025 footballforte.com — For entertainment purposes</div>
+  <div class="footer-links">
+    <a href="#">Discord</a>
+    <a href="#">Twitter / X</a>
+    <a href="#">Methodology</a>
+  </div>
+</footer>
+
+<script>
+  function openSidebar(){
+    document.getElementById('drawer').classList.add('open');
+    document.getElementById('overlay').classList.add('open');
+  }
+  function closeSidebar(){
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('overlay').classList.remove('open');
+  }
+</script>
+</body>
+</html>

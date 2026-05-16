@@ -35,12 +35,10 @@
     .sidebar-link{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:0.9rem 1.5rem;border-bottom:1px solid var(--border);transition:all 0.15s}
     .sidebar-link:hover,.sidebar-link.active{color:var(--text);background:var(--bg)}
     .sidebar-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--faint);padding:1rem 1.5rem 0.5rem}
-
     .filter-bar{padding:1rem 2rem;border-bottom:1px solid var(--border);max-width:1200px;margin:0 auto;display:flex;gap:0.6rem;flex-wrap:wrap}
     .filter-btn{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.2s}
     .filter-btn:hover{border-color:var(--text);color:var(--text)}
     .filter-btn.active{background:var(--text);border-color:var(--text);color:#fff}
-
     .sub-filter-bar{padding:0.65rem 2rem;border-bottom:1px solid var(--border);max-width:1200px;margin:0 auto;display:none;align-items:center;gap:1.5rem;background:var(--surface2);flex-wrap:wrap}
     .sub-filter-bar.visible{display:flex}
     .sub-group{display:flex;align-items:center;gap:0.5rem}
@@ -49,28 +47,23 @@
     .sub-btn{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.2s}
     .sub-btn:hover{border-color:var(--text);color:var(--text)}
     .sub-btn.active{background:var(--text);border-color:var(--text);color:#fff}
-
-    .sort-bar{padding:0.65rem 2rem;border-bottom:1px solid var(--border);max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
-    .sort-bar.rookie-visible{background:var(--surface2)}
-
     .content{max-width:1200px;margin:0 auto;padding:2rem}
     .articles-grid{display:flex;flex-direction:column}
-    .article-card{border-bottom:1px solid var(--border);padding:1.5rem 0;text-decoration:none;display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;transition:opacity 0.2s}
+    .article-card{border-bottom:1px solid var(--border);padding:1.5rem 0;text-decoration:none;display:flex;justify-content:space-between;align-items:center;gap:2rem;transition:opacity 0.2s}
     .article-card:hover{opacity:0.65}
     .article-card-left{flex:1}
     .article-card-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid var(--border);color:var(--muted);display:inline-block;margin-bottom:0.6rem}
     .article-card-title{font-family:var(--font-head);font-size:24px;font-weight:700;text-transform:uppercase;line-height:1.1;color:var(--text);margin-bottom:0.4rem}
     .article-card-excerpt{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6}
-    .article-card-right{flex-shrink:0;text-align:right}
+    .article-card-right{flex-shrink:0;text-align:center}
     .article-card-score{font-family:var(--font-head);font-size:26px;font-weight:900;color:var(--text);line-height:1}
     .article-card-score-label{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px}
-
     footer{border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
     .footer-copy{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
     .footer-links{display:flex;gap:1.5rem}
     .footer-links a{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:1px}
     .footer-links a:hover{color:var(--text)}
-    @media(max-width:600px){.article-card{flex-direction:column}.article-card-right{text-align:left}}
+    @media(max-width:600px){.article-card{flex-direction:column}.article-card-right{text-align:center}}
   </style>
 </head>
 <body>
@@ -152,8 +145,8 @@
   <div class="sub-group">
     <span class="sub-label">Sort:</span>
     <button class="sub-btn active" data-sort="default">Default</button>
-    <button class="sub-btn" data-sort="asc">Score: Low to High</button>
-    <button class="sub-btn" data-sort="desc">Score: High to Low</button>
+    <button class="sub-btn" data-sort="asc">Low to High</button>
+    <button class="sub-btn" data-sort="desc">High to Low</button>
   </div>
 </div>
 
@@ -180,6 +173,18 @@
       </div>
       <div class="article-card-right">
         <div class="article-card-score">41.8</div>
+        <div class="article-card-score-label">Prospect Score</div>
+      </div>
+    </a>
+
+    <a href="elijah-sarratt.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="WR" data-score="43.8">
+      <div class="article-card-left">
+        <span class="article-card-tag">Rookie Profile · 2026 · WR</span>
+        <div class="article-card-title">Elijah Sarratt</div>
+        <div class="article-card-excerpt">The chemistry with Mendoza was something special. Sarratt is exceptionally crafty in the red zone, but will need to prove he can handle press coverage at the next level.</div>
+      </div>
+      <div class="article-card-right">
+        <div class="article-card-score">43.8</div>
         <div class="article-card-score-label">Prospect Score</div>
       </div>
     </a>
@@ -218,22 +223,14 @@
   let currentPos = 'all';
   let currentSort = 'default';
 
-  function getCards(){
-    return Array.from(grid.querySelectorAll('.article-card'));
-  }
-
   function applyFiltersAndSort(){
-    let cards = getCards();
-
-    // Filter
+    let cards = Array.from(grid.querySelectorAll('.article-card'));
     cards.forEach(card => {
       const catMatch = currentCat === 'all' || card.dataset.cat === currentCat;
       const yearMatch = currentYear === 'all' || card.dataset.year === currentYear;
       const posMatch = currentPos === 'all' || card.dataset.pos === currentPos;
       card.style.display = catMatch && yearMatch && posMatch ? 'flex' : 'none';
     });
-
-    // Sort visible cards by prospect score
     if(currentSort !== 'default'){
       const visible = cards.filter(c => c.style.display !== 'none');
       visible.sort((a, b) => {
