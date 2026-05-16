@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Articles — Football Forte</title>
+  <title>Jeremiyah Love — Rookie Profile | Football Forte</title>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=IBM+Plex+Mono:wght@400;500&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
@@ -35,37 +35,30 @@
     .sidebar-link{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:0.9rem 1.5rem;border-bottom:1px solid var(--border);transition:all 0.15s}
     .sidebar-link:hover,.sidebar-link.active{color:var(--text);background:var(--bg)}
     .sidebar-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--faint);padding:1rem 1.5rem 0.5rem}
-    .filter-bar{padding:1rem 2rem;border-bottom:1px solid var(--border);max-width:1200px;margin:0 auto;display:flex;gap:0.6rem;flex-wrap:wrap}
-    .filter-btn{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.2s}
-    .filter-btn:hover{border-color:var(--text);color:var(--text)}
-    .filter-btn.active{background:var(--text);border-color:var(--text);color:#fff}
-    .sub-filter-bar{padding:0.6rem 2rem;border-bottom:1px solid var(--border);max-width:1200px;margin:0 auto;display:none;gap:0.6rem;background:var(--surface2)}
-    .sub-filter-bar.visible{display:flex}
-    .sub-label{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;margin-right:0.5rem}
-    .sub-btn{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.2s}
-    .sub-btn:hover{border-color:var(--text);color:var(--text)}
-    .sub-btn.active{background:var(--text);border-color:var(--text);color:#fff}
-    .content{max-width:1200px;margin:0 auto;padding:2rem}
-
-    /* ARTICLE CARDS */
-    .articles-grid{display:flex;flex-direction:column;gap:0}
-    .article-card{border-bottom:1px solid var(--border);padding:1.5rem 0;text-decoration:none;display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;cursor:pointer;transition:opacity 0.2s}
-    .article-card:hover{opacity:0.65}
-    .article-card-left{flex:1}
-    .article-card-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid var(--border);color:var(--muted);display:inline-block;margin-bottom:0.6rem}
-    .article-card-title{font-family:var(--font-head);font-size:24px;font-weight:700;text-transform:uppercase;line-height:1.1;color:var(--text);margin-bottom:0.4rem}
-    .article-card-excerpt{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6}
-    .article-card-right{flex-shrink:0;text-align:right}
-    .article-card-score{font-family:var(--font-head);font-size:32px;font-weight:900;color:var(--text);line-height:1}
-    .article-card-score-label{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px}
-
-    .empty-state{font-family:var(--font-mono);font-size:11px;color:var(--faint);letter-spacing:1px;text-transform:uppercase;padding:3rem 0}
+    .article-wrap{max-width:740px;margin:0 auto;padding:3rem 2rem 5rem}
+    .back-link{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;gap:6px;margin-bottom:2.5rem;transition:color 0.2s}
+    .back-link:hover{color:var(--text)}
+    .article-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid var(--border);color:var(--muted);display:inline-block;margin-bottom:1rem}
+    .article-title{font-family:var(--font-head);font-size:52px;font-weight:900;text-transform:uppercase;line-height:0.95;letter-spacing:-1px;margin-bottom:0.5rem;color:var(--text)}
+    .article-subtitle{font-family:var(--font-head);font-size:22px;font-weight:300;text-transform:uppercase;color:var(--muted);margin-bottom:2.5rem;letter-spacing:1px;border-bottom:1px solid var(--border);padding-bottom:1.5rem}
+    .score-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2.5rem}
+    .score-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.25rem}
+    .score-card.highlight{border-left:3px solid var(--text)}
+    .score-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem}
+    .score-val{font-family:var(--font-head);font-size:42px;font-weight:900;line-height:1;color:var(--text)}
+    .article-body{font-size:16px;line-height:1.8;color:var(--text)}
+    .article-body p{margin-bottom:1.5rem;font-weight:300}
+    .article-body h2{font-family:var(--font-head);font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin:2.5rem 0 1rem;padding-top:2rem;border-top:1px solid var(--border)}
+    .article-body h3{font-family:var(--font-head);font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin:1.5rem 0 0.75rem}
+    .article-body ul{list-style:none;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.5rem}
+    .article-body ul li{font-size:15px;font-weight:300;color:var(--text);padding-left:1.25rem;position:relative}
+    .article-body ul li::before{content:'—';position:absolute;left:0;color:var(--faint);font-family:var(--font-mono)}
     footer{border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
     .footer-copy{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
     .footer-links{display:flex;gap:1.5rem}
     .footer-links a{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:1px}
     .footer-links a:hover{color:var(--text)}
-    @media(max-width:600px){.article-card{flex-direction:column}.article-card-right{text-align:left}}
+    @media(max-width:600px){.article-title{font-size:38px}.score-cards{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -118,37 +111,53 @@
   </div>
 </nav>
 
-<div class="filter-bar" id="main-filters">
-  <button class="filter-btn active" data-cat="all">All</button>
-  <button class="filter-btn" data-cat="model-update">Model Update</button>
-  <button class="filter-btn" data-cat="analysis">Analysis</button>
-  <button class="filter-btn" data-cat="betting">Betting</button>
-  <button class="filter-btn" data-cat="dynasty">Dynasty</button>
-  <button class="filter-btn" data-cat="rookie-profiles">Rookie Profiles</button>
-</div>
+<div class="article-wrap">
+  <a href="articles.html" class="back-link">← Back to articles</a>
 
-<div class="sub-filter-bar" id="rookie-sub-filters">
-  <span class="sub-label">Draft class:</span>
-  <button class="sub-btn active" data-year="all">All</button>
-  <button class="sub-btn" data-year="2025">2025</button>
-  <button class="sub-btn" data-year="2026">2026</button>
-</div>
+  <span class="article-tag">Rookie Profile · 2026 · RB</span>
+  <div class="article-title">Jeremiyah Love</div>
+  <div class="article-subtitle">Running Back</div>
 
-<div class="content">
-  <div class="articles-grid" id="articles-grid">
+  <div class="score-cards">
+    <div class="score-card highlight">
+      <div class="score-label">Pre-Draft Score</div>
+      <div class="score-val">76.0</div>
+    </div>
+    <div class="score-card highlight">
+      <div class="score-label">Prospect Score</div>
+      <div class="score-val">89.4</div>
+    </div>
+  </div>
 
-    <a href="jeremiyah-love.html" class="article-card" data-cat="rookie-profiles" data-year="2026">
-      <div class="article-card-left">
-        <span class="article-card-tag">Rookie Profile · 2026 · RB</span>
-        <div class="article-card-title">Jeremiyah Love</div>
-        <div class="article-card-excerpt">The best back in this class by a wide margin. Equally adept as a runner and receiver, with advanced pass protection for his age. The clear 1.01.</div>
-      </div>
-      <div class="article-card-right">
-        <div class="article-card-score">89.4</div>
-        <div class="article-card-score-label">Prospect Score</div>
-      </div>
-    </a>
+  <div class="article-body">
+    <p>Jeremiyah Love is the best back in this class by a wide margin, which shouldn't come as a surprise given the hype he's getting going into the draft. Love has been an irreplaceable part of the Notre Dame offense the past two years and finished third in the Heisman voting this past year. There isn't much to dislike about Love's game — he is equally adept as both a runner and receiver which makes him a threat anywhere on the field. His pass protection is very advanced for such a young player, and you can tell he cares about keeping his quarterback upright.</p>
 
+    <p>Our model reflects similarly on Love's profile. He has an outstanding rushing grade from torching college defenses the past two years. His receiving grade is one of the best in this class and stacks up amongst other classes as well. He compares most closely with Travis Etienne Jr. in our model, except he is better in almost every single category our model values. Love is the clear 1.01 in a draft that is lacking star power and should provide fantasy managers with plenty of RB1 seasons over the course of his career.</p>
+
+    <h2>Film Notes</h2>
+
+    <h3>Rushing</h3>
+    <ul>
+      <li>The spin move is a lost art and he has a good one</li>
+      <li>Usually don't love hurdling but he has the green light</li>
+      <li>Great at staying tight to his blockers' butts</li>
+      <li>Good vision</li>
+      <li>Runs with surprising power in the red zone</li>
+      <li>Foot speed is incredible</li>
+      <li>Hardly goes down to arm tackles</li>
+    </ul>
+
+    <h3>Receiving</h3>
+    <ul>
+      <li>Crispy routes</li>
+      <li>Can make catches outside of his frame (see wheel route vs A&M)</li>
+    </ul>
+
+    <h3>Pass Blocking</h3>
+    <ul>
+      <li>Great at identifying his man</li>
+      <li>Squares up well</li>
+    </ul>
   </div>
 </div>
 
@@ -170,49 +179,6 @@
     document.getElementById('drawer').classList.remove('open');
     document.getElementById('overlay').classList.remove('open');
   }
-
-  const mainBtns = document.querySelectorAll('#main-filters .filter-btn');
-  const subBar = document.getElementById('rookie-sub-filters');
-  const subBtns = document.querySelectorAll('#rookie-sub-filters .sub-btn');
-  const cards = document.querySelectorAll('.article-card');
-
-  let currentCat = 'all';
-  let currentYear = 'all';
-
-  function filterCards(){
-    cards.forEach(card => {
-      const catMatch = currentCat === 'all' || card.dataset.cat === currentCat;
-      const yearMatch = currentYear === 'all' || card.dataset.year === currentYear;
-      card.style.display = catMatch && yearMatch ? 'flex' : 'none';
-    });
-  }
-
-  mainBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      mainBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentCat = btn.dataset.cat;
-      if(currentCat === 'rookie-profiles'){
-        subBar.classList.add('visible');
-      } else {
-        subBar.classList.remove('visible');
-        currentYear = 'all';
-        subBtns.forEach(b => b.classList.remove('active'));
-        subBtns[0].classList.add('active');
-      }
-      filterCards();
-    });
-  });
-
-  subBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      subBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentYear = btn.dataset.year;
-      filterCards();
-    });
-  });
 </script>
-
 </body>
 </html>
