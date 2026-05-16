@@ -35,10 +35,12 @@
     .sidebar-link{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:0.9rem 1.5rem;border-bottom:1px solid var(--border);transition:all 0.15s}
     .sidebar-link:hover,.sidebar-link.active{color:var(--text);background:var(--bg)}
     .sidebar-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--faint);padding:1rem 1.5rem 0.5rem}
+
     .filter-bar{padding:1rem 2rem;border-bottom:1px solid var(--border);max-width:1200px;margin:0 auto;display:flex;gap:0.6rem;flex-wrap:wrap}
     .filter-btn{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.2s}
     .filter-btn:hover{border-color:var(--text);color:var(--text)}
     .filter-btn.active{background:var(--text);border-color:var(--text);color:#fff}
+
     .sub-filter-bar{padding:0.65rem 2rem;border-bottom:1px solid var(--border);max-width:1200px;margin:0 auto;display:none;align-items:center;gap:1.5rem;background:var(--surface2);flex-wrap:wrap}
     .sub-filter-bar.visible{display:flex}
     .sub-group{display:flex;align-items:center;gap:0.5rem}
@@ -47,6 +49,10 @@
     .sub-btn{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.2s}
     .sub-btn:hover{border-color:var(--text);color:var(--text)}
     .sub-btn.active{background:var(--text);border-color:var(--text);color:#fff}
+
+    .sort-bar{padding:0.65rem 2rem;border-bottom:1px solid var(--border);max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+    .sort-bar.rookie-visible{background:var(--surface2)}
+
     .content{max-width:1200px;margin:0 auto;padding:2rem}
     .articles-grid{display:flex;flex-direction:column}
     .article-card{border-bottom:1px solid var(--border);padding:1.5rem 0;text-decoration:none;display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;transition:opacity 0.2s}
@@ -56,8 +62,9 @@
     .article-card-title{font-family:var(--font-head);font-size:24px;font-weight:700;text-transform:uppercase;line-height:1.1;color:var(--text);margin-bottom:0.4rem}
     .article-card-excerpt{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6}
     .article-card-right{flex-shrink:0;text-align:right}
-    .article-card-score{font-family:var(--font-head);font-size:32px;font-weight:900;color:var(--text);line-height:1}
+    .article-card-score{font-family:var(--font-head);font-size:26px;font-weight:900;color:var(--text);line-height:1}
     .article-card-score-label{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+
     footer{border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
     .footer-copy{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
     .footer-links{display:flex;gap:1.5rem}
@@ -141,12 +148,19 @@
     <button class="sub-btn" data-pos="WR">WR</button>
     <button class="sub-btn" data-pos="TE">TE</button>
   </div>
+  <div class="sub-divider"></div>
+  <div class="sub-group">
+    <span class="sub-label">Sort:</span>
+    <button class="sub-btn active" data-sort="default">Default</button>
+    <button class="sub-btn" data-sort="asc">Score: Low to High</button>
+    <button class="sub-btn" data-sort="desc">Score: High to Low</button>
+  </div>
 </div>
 
 <div class="content">
   <div class="articles-grid" id="articles-grid">
 
-    <a href="jeremiyah-love.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="RB">
+    <a href="jeremiyah-love.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="RB" data-score="89.4">
       <div class="article-card-left">
         <span class="article-card-tag">Rookie Profile · 2026 · RB</span>
         <div class="article-card-title">Jeremiyah Love</div>
@@ -158,7 +172,7 @@
       </div>
     </a>
 
-    <a href="mike-washington-jr.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="RB">
+    <a href="mike-washington-jr.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="RB" data-score="41.8">
       <div class="article-card-left">
         <span class="article-card-tag">Rookie Profile · 2026 · RB</span>
         <div class="article-card-title">Mike Washington Jr.</div>
@@ -196,19 +210,39 @@
   const subBar = document.getElementById('sub-filters');
   const yearBtns = document.querySelectorAll('[data-year]');
   const posBtns = document.querySelectorAll('[data-pos]');
-  const cards = document.querySelectorAll('.article-card');
+  const sortBtns = document.querySelectorAll('[data-sort]');
+  const grid = document.getElementById('articles-grid');
 
   let currentCat = 'all';
   let currentYear = 'all';
   let currentPos = 'all';
+  let currentSort = 'default';
 
-  function filterCards(){
+  function getCards(){
+    return Array.from(grid.querySelectorAll('.article-card'));
+  }
+
+  function applyFiltersAndSort(){
+    let cards = getCards();
+
+    // Filter
     cards.forEach(card => {
       const catMatch = currentCat === 'all' || card.dataset.cat === currentCat;
       const yearMatch = currentYear === 'all' || card.dataset.year === currentYear;
       const posMatch = currentPos === 'all' || card.dataset.pos === currentPos;
       card.style.display = catMatch && yearMatch && posMatch ? 'flex' : 'none';
     });
+
+    // Sort visible cards by prospect score
+    if(currentSort !== 'default'){
+      const visible = cards.filter(c => c.style.display !== 'none');
+      visible.sort((a, b) => {
+        const aScore = parseFloat(a.dataset.score) || 0;
+        const bScore = parseFloat(b.dataset.score) || 0;
+        return currentSort === 'asc' ? aScore - bScore : bScore - aScore;
+      });
+      visible.forEach(card => grid.appendChild(card));
+    }
   }
 
   mainBtns.forEach(btn => {
@@ -218,13 +252,15 @@
       currentCat = btn.dataset.cat;
       subBar.classList.toggle('visible', currentCat === 'rookie-profiles');
       if(currentCat !== 'rookie-profiles'){
-        currentYear = 'all'; currentPos = 'all';
+        currentYear = 'all'; currentPos = 'all'; currentSort = 'default';
         yearBtns.forEach(b => b.classList.remove('active'));
         posBtns.forEach(b => b.classList.remove('active'));
+        sortBtns.forEach(b => b.classList.remove('active'));
         yearBtns[0].classList.add('active');
         posBtns[0].classList.add('active');
+        sortBtns[0].classList.add('active');
       }
-      filterCards();
+      applyFiltersAndSort();
     });
   });
 
@@ -233,7 +269,7 @@
       yearBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       currentYear = btn.dataset.year;
-      filterCards();
+      applyFiltersAndSort();
     });
   });
 
@@ -242,7 +278,16 @@
       posBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       currentPos = btn.dataset.pos;
-      filterCards();
+      applyFiltersAndSort();
+    });
+  });
+
+  sortBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      sortBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentSort = btn.dataset.sort;
+      applyFiltersAndSort();
     });
   });
 </script>
