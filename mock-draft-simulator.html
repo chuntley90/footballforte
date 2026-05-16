@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mock Draft Simulator — Football Forte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=IBM+Plex+Mono:wght@400;500&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#f8f8f6;--surface:#ffffff;--surface2:#f2f2f0;--border:#e0e0dc;
+      --text:#0a0a0a;--muted:#888880;--faint:#c8c8c4;--accent:#0a0a0a;
+      --font-head:'Barlow Condensed',sans-serif;
+      --font-body:'Barlow',sans-serif;
+      --font-mono:'IBM Plex Mono',monospace;
+    }
+    body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh}
+
+    /* NAV */
+    nav{background:rgba(248,248,246,0.97);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:200;backdrop-filter:blur(8px)}
+    .nav-right{display:flex;align-items:center;gap:12px}
+    .btn-sm{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:7px 16px;border-radius:3px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block}
+    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);display:flex;flex-direction:column;align-items:center;line-height:1.1}
+    .btn-ghost:hover{border-color:var(--text);color:var(--text)}
+    .btn-solid{background:var(--text);border:1px solid var(--text);color:#fff;font-weight:600}
+    .btn-solid:hover{opacity:0.8}
+    .hamburger{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px}
+    .hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px}
+    .sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.2);z-index:300;opacity:0;pointer-events:none;transition:opacity 0.25s}
+    .sidebar-overlay.open{opacity:1;pointer-events:all}
+    .sidebar-drawer{position:fixed;top:0;left:-280px;width:280px;height:100vh;background:var(--surface);border-right:1px solid var(--border);z-index:400;transition:left 0.25s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column}
+    .sidebar-drawer.open{left:0}
+    .sidebar-top{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+    .sidebar-close{background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:18px;color:var(--muted);line-height:1}
+    .sidebar-close:hover{color:var(--text)}
+    .sidebar-nav{padding:1rem 0;flex:1}
+    .sidebar-link{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:0.9rem 1.5rem;border-bottom:1px solid var(--border);transition:all 0.15s}
+    .sidebar-link:hover,.sidebar-link.active{color:var(--text);background:var(--bg)}
+    .sidebar-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--faint);padding:1rem 1.5rem 0.5rem}
+
+    /* SCREENS */
+    .screen{display:none;max-width:1100px;margin:0 auto;padding:2rem}
+    .screen.active{display:block}
+
+    /* SETUP SCREEN */
+    .setup-title{font-family:var(--font-head);font-size:48px;font-weight:900;text-transform:uppercase;letter-spacing:-1px;margin-bottom:0.5rem}
+    .setup-sub{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:3rem}
+    .setup-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem;margin-bottom:3rem}
+    .setup-section{display:flex;flex-direction:column;gap:0.75rem}
+    .setup-label{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:0.25rem}
+    .option-group{display:flex;gap:8px;flex-wrap:wrap}
+    .opt-btn{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 18px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s}
+    .opt-btn:hover{border-color:var(--text);color:var(--text)}
+    .opt-btn.selected{background:var(--text);border-color:var(--text);color:#fff}
+    .start-btn{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px 40px;border-radius:3px;background:var(--text);border:1px solid var(--text);color:#fff;cursor:pointer;transition:opacity 0.2s}
+    .start-btn:hover{opacity:0.8}
+    .start-btn:disabled{opacity:0.3;cursor:not-allowed}
+    .loading-msg{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:1rem;letter-spacing:1px}
+
+    /* DRAFT SCREEN */
+    .draft-layout{display:grid;grid-template-columns:1fr 320px;gap:2rem}
+    .draft-main{}
+    .draft-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+    .draft-pick-info{font-family:var(--font-head);font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+    .draft-pick-sub{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+    .your-turn-badge{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:3px;background:var(--text);color:#fff}
+    .cpu-badge{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:3px;background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
+
+    /* PLAYER LIST */
+    .player-filters{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+    .pos-filter{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s}
+    .pos-filter:hover{border-color:var(--text);color:var(--text)}
+    .pos-filter.active{background:var(--text);border-color:var(--text);color:#fff}
+    .player-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:4px;overflow:hidden;max-height:420px;overflow-y:auto}
+    .player-list-header{display:grid;grid-template-columns:30px 1fr 50px 70px 70px;gap:0;padding:7px 12px;background:var(--surface2);border-bottom:1px solid var(--border);position:sticky;top:0}
+    .player-list-header span{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:center}
+    .player-list-header span:first-child,.player-list-header span:nth-child(2){text-align:left}
+    .player-row{display:grid;grid-template-columns:30px 1fr 50px 70px 70px;gap:0;padding:8px 12px;border-bottom:1px solid var(--border);align-items:center;cursor:pointer;transition:background 0.1s}
+    .player-row:last-child{border-bottom:none}
+    .player-row:hover{background:var(--surface2)}
+    .player-row.drafted{opacity:0.3;pointer-events:none}
+    .player-rank{font-family:var(--font-mono);font-size:9px;color:var(--faint)}
+    .player-name{font-family:var(--font-head);font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:var(--text)}
+    .player-team{font-family:var(--font-mono);font-size:9px;color:var(--muted)}
+    .player-pos{font-family:var(--font-mono);font-size:9px;font-weight:500;text-align:center;padding:2px 6px;border-radius:2px}
+    .pos-RB{background:#f0f0ee;color:var(--text)}
+    .pos-WR{background:#f0f0ee;color:var(--text)}
+    .pos-QB{background:#f0f0ee;color:var(--text)}
+    .pos-TE{background:#f0f0ee;color:var(--text)}
+    .player-val{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-align:center}
+    .player-val.score{color:var(--text);font-weight:500}
+
+    /* DRAFT LOG */
+    .draft-log{background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+    .draft-log-header{padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface2)}
+    .draft-log-title{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+    .draft-log-list{max-height:500px;overflow-y:auto}
+    .log-entry{padding:8px 14px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:2px}
+    .log-entry:last-child{border-bottom:none}
+    .log-entry.yours{background:#fafaf8;border-left:3px solid var(--text)}
+    .log-pick{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--faint)}
+    .log-player{font-family:var(--font-head);font-size:15px;font-weight:700;text-transform:uppercase;color:var(--text)}
+    .log-meta{font-family:var(--font-mono);font-size:9px;color:var(--muted)}
+    .log-team{font-family:var(--font-mono);font-size:9px;color:var(--muted)}
+
+    /* CPU PICK OVERLAY */
+    .cpu-thinking{display:none;position:fixed;bottom:2rem;right:2rem;background:var(--text);color:#fff;font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:10px 18px;border-radius:3px;z-index:500}
+    .cpu-thinking.show{display:block}
+
+    /* RESULTS SCREEN */
+    .results-title{font-family:var(--font-head);font-size:48px;font-weight:900;text-transform:uppercase;letter-spacing:-1px;margin-bottom:0.5rem}
+    .results-sub{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:2rem}
+    .your-picks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+    .pick-card-result{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1rem}
+    .pick-card-result .round{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
+    .pick-card-result .name{font-family:var(--font-head);font-size:20px;font-weight:700;text-transform:uppercase;line-height:1;margin-bottom:4px}
+    .pick-card-result .meta{font-family:var(--font-mono);font-size:9px;color:var(--muted)}
+    .pick-card-result .ps{font-family:var(--font-head);font-size:28px;font-weight:900;color:var(--text);margin-top:8px}
+    .pick-card-result .ps-label{font-family:var(--font-mono);font-size:8px;color:var(--faint);text-transform:uppercase;letter-spacing:1px}
+    .restart-btn{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:12px 32px;border-radius:3px;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all 0.2s}
+    .restart-btn:hover{border-color:var(--text);color:var(--text)}
+
+    footer{border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:3rem}
+    .footer-copy{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+    .footer-links{display:flex;gap:1.5rem}
+    .footer-links a{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:1px}
+
+    @media(max-width:768px){
+      .draft-layout{grid-template-columns:1fr}
+      .setup-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+<div class="sidebar-drawer" id="drawer">
+  <div class="sidebar-top">
+    <img src="logo.jpeg" alt="Football Forte" style="height:28px;display:block">
+    <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+  </div>
+  <div class="sidebar-nav">
+    <div class="sidebar-label">Navigation</div>
+    <a href="index.html" class="sidebar-link">Home</a>
+    <a href="index.html" class="sidebar-link">Betting Model</a>
+    <a href="#" class="sidebar-link">Rookie Model</a>
+    <a href="#" class="sidebar-link">Dynasty Tools</a>
+    <a href="articles.html" class="sidebar-link">Articles</a>
+  </div>
+</div>
+
+<nav>
+  <div style="display:flex;align-items:center;gap:1rem">
+    <button class="hamburger" onclick="openSidebar()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <img src="logo.jpeg" alt="Football Forte" style="height:36px;display:block">
+  </div>
+  <div class="nav-right">
+    <a href="#" class="btn-sm btn-ghost">Sign<br>in</a>
+    <a href="#" class="btn-sm btn-solid">Join Free</a>
+  </div>
+</nav>
+
+<!-- SETUP SCREEN -->
+<div class="screen active" id="screen-setup">
+  <div style="padding:2rem;max-width:900px;margin:0 auto">
+    <div class="setup-title">Mock Draft<br>Simulator</div>
+    <div class="setup-sub">2026 Rookie Draft · Football Forte Model</div>
+
+    <div class="setup-grid">
+      <div class="setup-section">
+        <div class="setup-label">League Size</div>
+        <div class="option-group" id="teams-group">
+          <button class="opt-btn" data-val="10" onclick="selectOpt('teams',this)">10 Teams</button>
+          <button class="opt-btn selected" data-val="12" onclick="selectOpt('teams',this)">12 Teams</button>
+          <button class="opt-btn" data-val="14" onclick="selectOpt('teams',this)">14 Teams</button>
+        </div>
+      </div>
+
+      <div class="setup-section">
+        <div class="setup-label">Rounds</div>
+        <div class="option-group" id="rounds-group">
+          <button class="opt-btn" data-val="2" onclick="selectOpt('rounds',this)">2</button>
+          <button class="opt-btn selected" data-val="3" onclick="selectOpt('rounds',this)">3</button>
+          <button class="opt-btn" data-val="4" onclick="selectOpt('rounds',this)">4</button>
+        </div>
+      </div>
+
+      <div class="setup-section">
+        <div class="setup-label">Your Draft Position</div>
+        <div class="option-group" id="pos-group" style="flex-wrap:wrap;max-width:280px">
+        </div>
+      </div>
+    </div>
+
+    <button class="start-btn" id="start-btn" onclick="startDraft()">Start Draft</button>
+    <div class="loading-msg" id="loading-msg" style="display:none">Loading player data from Google Sheets...</div>
+    <div class="loading-msg" id="error-msg" style="display:none;color:#c00">Could not load player data. Check your connection and try again.</div>
+  </div>
+</div>
+
+<!-- DRAFT SCREEN -->
+<div class="screen" id="screen-draft">
+  <div style="padding:2rem;max-width:1100px;margin:0 auto">
+    <div class="draft-layout">
+      <div class="draft-main">
+        <div class="draft-header">
+          <div>
+            <div class="draft-pick-info" id="pick-info">Pick 1.01</div>
+            <div class="draft-pick-sub" id="pick-sub">Round 1 of 3 · Team 1 on the clock</div>
+          </div>
+          <div id="turn-badge" class="your-turn-badge">Your Pick</div>
+        </div>
+
+        <div class="player-filters">
+          <button class="pos-filter active" onclick="filterPos('ALL',this)">All</button>
+          <button class="pos-filter" onclick="filterPos('QB',this)">QB</button>
+          <button class="pos-filter" onclick="filterPos('RB',this)">RB</button>
+          <button class="pos-filter" onclick="filterPos('WR',this)">WR</button>
+          <button class="pos-filter" onclick="filterPos('TE',this)">TE</button>
+        </div>
+
+        <div class="player-list">
+          <div class="player-list-header">
+            <span>Rank</span>
+            <span>Player</span>
+            <span>Pos</span>
+            <span>FP ADP</span>
+            <span>Your ADP</span>
+            
+          </div>
+          <div id="player-rows"></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="draft-log">
+          <div class="draft-log-header">
+            <div class="draft-log-title">Draft Board</div>
+          </div>
+          <div class="draft-log-list" id="draft-log"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div class="screen" id="screen-results">
+  <div style="padding:2rem;max-width:1100px;margin:0 auto">
+    <div class="results-title">Your Draft</div>
+    <div class="results-sub" id="results-sub">3 rounds · Pick 1.06</div>
+    <div class="your-picks-grid" id="your-picks-grid"></div>
+    <button class="restart-btn" onclick="restartDraft()">Draft Again</button>
+  </div>
+</div>
+
+<div class="cpu-thinking" id="cpu-thinking">CPU picking...</div>
+
+<footer>
+  <div class="footer-copy">© 2025 footballforte.com</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="articles.html">Articles</a>
+  </div>
+</footer>
+
+<script>
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR0sKY8qaTQQFKLNfw4muWFb1ljhxZeCrD9XmHJZ5Y8dV2Vrpufh-cQt6Voyhj4TColptZVlqwypfHd/pub?output=csv';
+
+let settings = { teams: 12, rounds: 3, draftPos: 1 };
+let players = [];
+let draftedIds = new Set();
+let draftLog = [];
+let currentPick = 0;
+let totalPicks = 0;
+let yourPicks = [];
+let posFilter = 'ALL';
+
+function openSidebar(){ document.getElementById('drawer').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
+function closeSidebar(){ document.getElementById('drawer').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+
+function selectOpt(group, btn) {
+  document.querySelectorAll(`#${group}-group .opt-btn`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  settings[group] = parseInt(btn.dataset.val);
+  if(group === 'teams') buildPosOptions();
+}
+
+function buildPosOptions() {
+  const g = document.getElementById('pos-group');
+  g.innerHTML = '';
+  for(let i = 1; i <= settings.teams; i++) {
+    const b = document.createElement('button');
+    b.className = 'opt-btn' + (i === settings.draftPos ? ' selected' : '');
+    b.dataset.val = i;
+    b.textContent = i;
+    b.onclick = function(){ selectOpt('draftPos', this); settings.draftPos = i; };
+    g.appendChild(b);
+  }
+}
+
+function selectOpt(group, btn) {
+  const groupId = group === 'teams' ? 'teams-group' : group === 'rounds' ? 'rounds-group' : 'pos-group';
+  document.querySelectorAll(`#${groupId} .opt-btn`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  if(group === 'teams'){ settings.teams = parseInt(btn.dataset.val); buildPosOptions(); }
+  else if(group === 'rounds') settings.rounds = parseInt(btn.dataset.val);
+  else { settings.draftPos = parseInt(btn.dataset.val); }
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().replace(/"/g,''));
+  return lines.slice(1).map((line, idx) => {
+    const vals = line.split(',').map(v => v.trim().replace(/"/g,''));
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = vals[i] || '');
+    obj.id = idx;
+    obj.drafted = false;
+    return obj;
+  }).filter(p => p['Player Name']);
+}
+
+function getADP(p) {
+  const yourAdp = parseFloat(p['Your ADP']);
+  const fpAdp = parseFloat(p['FantasyPros ADP']);
+  const ffc = parseFloat(p['FFC ADP']);
+  const vals = [yourAdp, fpAdp, ffc].filter(v => !isNaN(v));
+  if(vals.length === 0) return 999;
+  return vals.reduce((a,b) => a+b, 0) / vals.length;
+}
+
+function sortedAvailable() {
+  return players
+    .filter(p => !draftedIds.has(p.id))
+    .sort((a,b) => getADP(a) - getADP(b));
+}
+
+async function startDraft() {
+  const btn = document.getElementById('start-btn');
+  const loadMsg = document.getElementById('loading-msg');
+  const errMsg = document.getElementById('error-msg');
+  btn.disabled = true;
+  loadMsg.style.display = 'block';
+  errMsg.style.display = 'none';
+
+  try {
+    const resp = await fetch(SHEET_URL);
+    if(!resp.ok) throw new Error('fetch failed');
+    const text = await resp.text();
+    players = parseCSV(text);
+    if(players.length === 0) throw new Error('no players');
+  } catch(e) {
+    loadMsg.style.display = 'none';
+    errMsg.style.display = 'block';
+    btn.disabled = false;
+    return;
+  }
+
+  loadMsg.style.display = 'none';
+  draftedIds = new Set();
+  draftLog = [];
+  yourPicks = [];
+  currentPick = 0;
+  totalPicks = settings.teams * settings.rounds;
+
+  showScreen('draft');
+  renderPlayerList();
+  advancePick();
+}
+
+function pickForRound(pickNum) {
+  const round = Math.floor(pickNum / settings.teams) + 1;
+  const posInRound = pickNum % settings.teams;
+  if(round % 2 === 1) return posInRound + 1;
+  else return settings.teams - posInRound;
+}
+
+function isYourPick(pickNum) {
+  return pickForRound(pickNum) === settings.draftPos;
+}
+
+function pickLabel(pickNum) {
+  const round = Math.floor(pickNum / settings.teams) + 1;
+  const slot = pickForRound(pickNum);
+  return `${round}.${String(slot).padStart(2,'0')}`;
+}
+
+function advancePick() {
+  if(currentPick >= totalPicks) { endDraft(); return; }
+  updatePickHeader();
+  if(isYourPick(currentPick)) {
+    document.getElementById('turn-badge').className = 'your-turn-badge';
+    document.getElementById('turn-badge').textContent = 'Your Pick';
+    renderPlayerList();
+  } else {
+    document.getElementById('turn-badge').className = 'cpu-badge';
+    document.getElementById('turn-badge').textContent = 'CPU Picking';
+    renderPlayerList();
+    setTimeout(cpuPick, 700 + Math.random() * 600);
+  }
+}
+
+function cpuPick() {
+  const available = sortedAvailable();
+  if(available.length === 0) return;
+  // CPU picks with some randomness around ADP rank
+  const topN = Math.min(3, available.length);
+  const pick = available[Math.floor(Math.random() * topN)];
+  draftPlayer(pick, false);
+}
+
+function draftPlayer(player, isYours) {
+  draftedIds.add(player.id);
+  const entry = { player, pick: currentPick, label: pickLabel(currentPick), isYours };
+  draftLog.push(entry);
+  if(isYours) yourPicks.push(entry);
+
+  addLogEntry(entry);
+  currentPick++;
+  renderPlayerList();
+  setTimeout(advancePick, isYours ? 0 : 300);
+}
+
+function addLogEntry(entry) {
+  const log = document.getElementById('draft-log');
+  const div = document.createElement('div');
+  div.className = 'log-entry' + (entry.isYours ? ' yours' : '');
+
+  div.innerHTML = `
+    <div class="log-pick">${entry.label}${entry.isYours ? ' · Your Pick' : ''}</div>
+    <div class="log-player">${entry.player['Player Name']}</div>
+    <div class="log-meta">${entry.player['Position']} · ${entry.player['NFL Team'] || 'FA'}</div>
+  `;
+  log.insertBefore(div, log.firstChild);
+}
+
+function updatePickHeader() {
+  const round = Math.floor(currentPick / settings.teams) + 1;
+  const slot = pickForRound(currentPick);
+  document.getElementById('pick-info').textContent = `Pick ${pickLabel(currentPick)}`;
+  document.getElementById('pick-sub').textContent = `Round ${round} of ${settings.rounds} · Team ${slot} on the clock`;
+}
+
+function renderPlayerList() {
+  const container = document.getElementById('player-rows');
+  const available = players.filter(p => !draftedIds.has(p.id));
+  const filtered = posFilter === 'ALL' ? available : available.filter(p => p['Position'] === posFilter);
+  const sorted = filtered.sort((a,b) => getADP(a) - getADP(b));
+
+  container.innerHTML = sorted.slice(0, 80).map((p, i) => {
+    const adp = getADP(p);
+    const yourAdp = p['Your ADP'] ? parseFloat(p['Your ADP']).toFixed(1) : '—';
+    const fpAdp = p['FantasyPros ADP'] ? parseFloat(p['FantasyPros ADP']).toFixed(1) : '—';
+
+    const isYourTurn = isYourPick(currentPick);
+    return `<div class="player-row" onclick="${isYourTurn ? `selectPlayer(${p.id})` : ''}">
+      <div class="player-rank">${i+1}</div>
+      <div>
+        <div class="player-name">${p['Player Name']}</div>
+        <div class="player-team">${p['NFL Team'] || 'FA'}</div>
+      </div>
+      <div><span class="player-pos pos-${p['Position']}">${p['Position']}</span></div>
+      <div class="player-val">${fpAdp}</div>
+      <div class="player-val">${yourAdp}</div>
+
+    </div>`;
+  }).join('');
+}
+
+function selectPlayer(id) {
+  if(!isYourPick(currentPick)) return;
+  const player = players.find(p => p.id === id);
+  if(!player || draftedIds.has(id)) return;
+  draftPlayer(player, true);
+}
+
+function filterPos(pos, btn) {
+  posFilter = pos;
+  document.querySelectorAll('.pos-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPlayerList();
+}
+
+function endDraft() {
+  showScreen('results');
+  document.getElementById('results-sub').textContent = `${settings.rounds} rounds · Draft position ${settings.draftPos}`;
+  const grid = document.getElementById('your-picks-grid');
+  grid.innerHTML = yourPicks.map(entry => {
+    const p = entry.player;
+
+
+    return `<div class="pick-card-result">
+      <div class="round">${entry.label}</div>
+      <div class="name">${p['Player Name']}</div>
+      <div class="meta">${p['Position']} · ${p['NFL Team'] || 'FA'}</div>
+
+    </div>`;
+  }).join('');
+}
+
+function restartDraft() {
+  showScreen('setup');
+  document.getElementById('start-btn').disabled = false;
+}
+
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+}
+
+buildPosOptions();
+</script>
+</body>
+</html>
