@@ -39,17 +39,17 @@
     .filter-btn{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.2s}
     .filter-btn:hover{border-color:var(--text);color:var(--text)}
     .filter-btn.active{background:var(--text);border-color:var(--text);color:#fff}
-    .sub-filter-bar{padding:0.6rem 2rem;border-bottom:1px solid var(--border);max-width:1200px;margin:0 auto;display:none;gap:0.6rem;background:var(--surface2)}
+    .sub-filter-bar{padding:0.65rem 2rem;border-bottom:1px solid var(--border);max-width:1200px;margin:0 auto;display:none;align-items:center;gap:1.5rem;background:var(--surface2);flex-wrap:wrap}
     .sub-filter-bar.visible{display:flex}
-    .sub-label{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;margin-right:0.5rem}
+    .sub-group{display:flex;align-items:center;gap:0.5rem}
+    .sub-divider{width:1px;height:18px;background:var(--border)}
+    .sub-label{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--faint)}
     .sub-btn{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.2s}
     .sub-btn:hover{border-color:var(--text);color:var(--text)}
     .sub-btn.active{background:var(--text);border-color:var(--text);color:#fff}
     .content{max-width:1200px;margin:0 auto;padding:2rem}
-
-    /* ARTICLE CARDS */
-    .articles-grid{display:flex;flex-direction:column;gap:0}
-    .article-card{border-bottom:1px solid var(--border);padding:1.5rem 0;text-decoration:none;display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;cursor:pointer;transition:opacity 0.2s}
+    .articles-grid{display:flex;flex-direction:column}
+    .article-card{border-bottom:1px solid var(--border);padding:1.5rem 0;text-decoration:none;display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;transition:opacity 0.2s}
     .article-card:hover{opacity:0.65}
     .article-card-left{flex:1}
     .article-card-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid var(--border);color:var(--muted);display:inline-block;margin-bottom:0.6rem}
@@ -58,8 +58,6 @@
     .article-card-right{flex-shrink:0;text-align:right}
     .article-card-score{font-family:var(--font-head);font-size:32px;font-weight:900;color:var(--text);line-height:1}
     .article-card-score-label{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px}
-
-    .empty-state{font-family:var(--font-mono);font-size:11px;color:var(--faint);letter-spacing:1px;text-transform:uppercase;padding:3rem 0}
     footer{border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
     .footer-copy{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
     .footer-links{display:flex;gap:1.5rem}
@@ -127,17 +125,28 @@
   <button class="filter-btn" data-cat="rookie-profiles">Rookie Profiles</button>
 </div>
 
-<div class="sub-filter-bar" id="rookie-sub-filters">
-  <span class="sub-label">Draft class:</span>
-  <button class="sub-btn active" data-year="all">All</button>
-  <button class="sub-btn" data-year="2025">2025</button>
-  <button class="sub-btn" data-year="2026">2026</button>
+<div class="sub-filter-bar" id="sub-filters">
+  <div class="sub-group">
+    <span class="sub-label">Class:</span>
+    <button class="sub-btn active" data-year="all">All</button>
+    <button class="sub-btn" data-year="2025">2025</button>
+    <button class="sub-btn" data-year="2026">2026</button>
+  </div>
+  <div class="sub-divider"></div>
+  <div class="sub-group">
+    <span class="sub-label">Position:</span>
+    <button class="sub-btn active" data-pos="all">All</button>
+    <button class="sub-btn" data-pos="QB">QB</button>
+    <button class="sub-btn" data-pos="RB">RB</button>
+    <button class="sub-btn" data-pos="WR">WR</button>
+    <button class="sub-btn" data-pos="TE">TE</button>
+  </div>
 </div>
 
 <div class="content">
   <div class="articles-grid" id="articles-grid">
 
-    <a href="jeremiyah-love.html" class="article-card" data-cat="rookie-profiles" data-year="2026">
+    <a href="jeremiyah-love.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="RB">
       <div class="article-card-left">
         <span class="article-card-tag">Rookie Profile · 2026 · RB</span>
         <div class="article-card-title">Jeremiyah Love</div>
@@ -145,6 +154,18 @@
       </div>
       <div class="article-card-right">
         <div class="article-card-score">89.4</div>
+        <div class="article-card-score-label">Prospect Score</div>
+      </div>
+    </a>
+
+    <a href="mike-washington-jr.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="RB">
+      <div class="article-card-left">
+        <span class="article-card-tag">Rookie Profile · 2026 · RB</span>
+        <div class="article-card-title">Mike Washington Jr.</div>
+        <div class="article-card-excerpt">An undeniable physical specimen with a King Henry stylistic comparison, but the model suggests the actual skills may not match the athleticism.</div>
+      </div>
+      <div class="article-card-right">
+        <div class="article-card-score">41.8</div>
         <div class="article-card-score-label">Prospect Score</div>
       </div>
     </a>
@@ -172,18 +193,21 @@
   }
 
   const mainBtns = document.querySelectorAll('#main-filters .filter-btn');
-  const subBar = document.getElementById('rookie-sub-filters');
-  const subBtns = document.querySelectorAll('#rookie-sub-filters .sub-btn');
+  const subBar = document.getElementById('sub-filters');
+  const yearBtns = document.querySelectorAll('[data-year]');
+  const posBtns = document.querySelectorAll('[data-pos]');
   const cards = document.querySelectorAll('.article-card');
 
   let currentCat = 'all';
   let currentYear = 'all';
+  let currentPos = 'all';
 
   function filterCards(){
     cards.forEach(card => {
       const catMatch = currentCat === 'all' || card.dataset.cat === currentCat;
       const yearMatch = currentYear === 'all' || card.dataset.year === currentYear;
-      card.style.display = catMatch && yearMatch ? 'flex' : 'none';
+      const posMatch = currentPos === 'all' || card.dataset.pos === currentPos;
+      card.style.display = catMatch && yearMatch && posMatch ? 'flex' : 'none';
     });
   }
 
@@ -192,23 +216,32 @@
       mainBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       currentCat = btn.dataset.cat;
-      if(currentCat === 'rookie-profiles'){
-        subBar.classList.add('visible');
-      } else {
-        subBar.classList.remove('visible');
-        currentYear = 'all';
-        subBtns.forEach(b => b.classList.remove('active'));
-        subBtns[0].classList.add('active');
+      subBar.classList.toggle('visible', currentCat === 'rookie-profiles');
+      if(currentCat !== 'rookie-profiles'){
+        currentYear = 'all'; currentPos = 'all';
+        yearBtns.forEach(b => b.classList.remove('active'));
+        posBtns.forEach(b => b.classList.remove('active'));
+        yearBtns[0].classList.add('active');
+        posBtns[0].classList.add('active');
       }
       filterCards();
     });
   });
 
-  subBtns.forEach(btn => {
+  yearBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      subBtns.forEach(b => b.classList.remove('active'));
+      yearBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       currentYear = btn.dataset.year;
+      filterCards();
+    });
+  });
+
+  posBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      posBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentPos = btn.dataset.pos;
       filterCards();
     });
   });
