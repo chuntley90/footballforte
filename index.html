@@ -109,6 +109,19 @@
     .pick-val{font-family:var(--font-mono);font-size:9px;color:var(--muted);text-align:center;white-space:nowrap}
     .pick-val.our{color:var(--text);font-weight:500}
     .pick-day{font-family:var(--font-head);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--faint);padding:5px 10px;background:var(--surface2);border-bottom:1px solid var(--border)}
+    .picks-wrap{background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:2rem}
+    .picks-header{display:grid;grid-template-columns:90px 1fr 1fr 1fr 1fr;gap:0;padding:7px 10px;background:var(--surface2);border-bottom:1px solid var(--border)}
+    .picks-header span{font-family:var(--font-mono);font-size:7.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:center}
+    .picks-header span:first-child{text-align:left}
+    .pick-row{display:grid;grid-template-columns:90px 1fr 1fr 1fr 1fr;gap:0;padding:6px 10px;border-bottom:1px solid var(--border);align-items:center}
+    .pick-row:last-child{border-bottom:none}
+    .pick-row:hover{background:var(--surface2)}
+    .pick-matchup{display:flex;flex-direction:column}
+    .pick-game{font-family:var(--font-mono);font-size:8.5px;letter-spacing:0.5px;color:var(--text);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .pick-time{font-family:var(--font-mono);font-size:7.5px;color:var(--faint)}
+    .pick-val{font-family:var(--font-mono);font-size:9px;color:var(--muted);text-align:center;white-space:nowrap}
+    .pick-val.our{color:var(--text);font-weight:500}
+    .pick-day{font-family:var(--font-head);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--faint);padding:5px 10px;background:var(--surface2);border-bottom:1px solid var(--border)}
     @media(max-width:768px){.main{grid-template-columns:1fr}.feed{border-right:none}.sidebar{border-top:1px solid var(--border)}.hero h1{font-size:42px}}
   </style>
 </head>
@@ -144,7 +157,7 @@
 </nav>
 
 <div class="hero">
-  <h1>Football<br>Is Our<br><em>Forte</em></h1>
+  <h1>Football Is Our <em>Forte</em></h1>
   <p class="hero-sub">Using numbers to predict the unpredictable game of football.</p>
   <div class="hero-stats">
     <div class="stat"><div class="stat-val" id="season-ats">63.2%</div><div class="stat-lbl">Season ATS</div></div>
@@ -156,52 +169,6 @@
 
 <div class="main">
   <div class="feed">
-    <div class="section-head">
-      <div class="section-title">Today's picks</div>
-      <a href="#" class="see-all">View all →</a>
-    </div>
-    <div class="picks-grid">
-      <div class="pick-card hot">
-        <div class="pick-meta">
-          <div class="pick-game">PHI @ DAL · Sun 4:25 ET · NFL · Week 14</div>
-          <div class="pick-conf conf-high">High confidence</div>
-        </div>
-        <div class="pick-main">
-          <div>
-            <div class="pick-title">Eagles −3.5</div>
-            <div class="pick-tags"><span class="tag">Spread</span><span class="tag">Model pick</span><span class="tag">Line value</span></div>
-          </div>
-          <div class="pick-line">−110<span>Opening: −2.5</span></div>
-        </div>
-      </div>
-      <div class="pick-card hot">
-        <div class="pick-meta">
-          <div class="pick-game">KC @ BUF · Sun 8:20 ET · NFL · Week 14</div>
-          <div class="pick-conf conf-high">High confidence</div>
-        </div>
-        <div class="pick-main">
-          <div>
-            <div class="pick-title">Over 48.5</div>
-            <div class="pick-tags"><span class="tag">Total</span><span class="tag">Weather adj.</span><span class="tag">Model pick</span></div>
-          </div>
-          <div class="pick-line">−115<span>Opening: 47</span></div>
-        </div>
-      </div>
-      <div class="pick-card">
-        <div class="pick-meta">
-          <div class="pick-game">LAR @ SF · Sun 1:00 ET · NFL · Week 14</div>
-          <div class="pick-conf conf-mid">Medium confidence</div>
-        </div>
-        <div class="pick-main">
-          <div>
-            <div class="pick-title">49ers ML</div>
-            <div class="pick-tags"><span class="tag">Moneyline</span><span class="tag">Community</span></div>
-          </div>
-          <div class="pick-line">−145<span>Community pick</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="section-sep"></div>
     <div class="section-head">
       <div class="section-title">Latest Articles</div>
       <a href="articles.html" class="see-all">View all →</a>
