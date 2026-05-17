@@ -55,6 +55,20 @@
     .footer-copy{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
     .footer-links{display:flex;gap:1.5rem}
     .footer-links a{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:1px}
+
+    @media(max-width:768px){
+      nav{padding:0 1rem}
+      .page-wrap{padding:2rem 1rem}
+      .rankings-table{overflow-x:auto}
+      .table-header,.table-row,.grades-header,.grade-row{min-width:500px}
+      .rank-cards{grid-template-columns:1fr 1fr 1fr}
+      .team-name{font-size:36px}
+    }
+    @media(max-width:480px){
+      .rank-cards{grid-template-columns:1fr}
+      .team-name{font-size:28px}
+      .sort-tabs{flex-wrap:wrap}
+    }
   </style>
 </head>
 <body>

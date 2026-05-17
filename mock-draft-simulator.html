@@ -154,6 +154,22 @@
     .footer-links a{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:1px}
 
     @media(max-width:768px){.draft-layout{grid-template-columns:1fr}.setup-grid{grid-template-columns:1fr}}
+
+    @media(max-width:768px){
+      nav{padding:0 1rem}
+      .setup-wrap{padding:2rem 1rem}
+      .setup-grid{grid-template-columns:1fr;gap:1.5rem}
+      .draft-layout{grid-template-columns:1fr}
+      .draft-wrap{padding:1.5rem 1rem}
+      .results-wrap{padding:2rem 1rem}
+      .your-picks-grid{grid-template-columns:repeat(2,1fr)}
+      .mode-tabs{flex-wrap:wrap}
+    }
+    @media(max-width:480px){
+      .your-picks-grid{grid-template-columns:1fr}
+      .setup-title{font-size:36px}
+      .results-title{font-size:36px}
+    }
   </style>
 </head>
 <body>
