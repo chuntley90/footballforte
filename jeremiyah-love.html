@@ -58,6 +58,9 @@
     .footer-links{display:flex;gap:1.5rem}
     .footer-links a{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:1px}
     .footer-links a:hover{color:var(--text)}
+    .spider-wrap{display:flex;justify-content:center;margin:2rem 0;padding:2rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .axis-lbl{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;fill:var(--muted)}
+
     @media(max-width:600px){.article-title{font-size:38px}.score-cards{grid-template-columns:1fr}}
 
     @media(max-width:768px){
@@ -122,6 +125,7 @@
 
     <p>Our model reflects similarly on Love's profile. He has an outstanding rushing grade from torching college defenses the past two years. His receiving grade is one of the best in this class and stacks up amongst other classes as well. He compares most closely with Travis Etienne Jr. in our model, except he is better in almost every single category our model values. Love is the clear 1.01 in a draft that is lacking star power and should provide fantasy managers with plenty of RB1 seasons over the course of his career.</p>
 
+    <div class="spider-wrap" id="spider-wrap"></div>
     <h2>Film Notes</h2>
 
     <h3>Rushing</h3>
@@ -159,6 +163,89 @@
 </footer>
 
 <script>
+
+const RB_SHEET = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR0sKY8qaTQQFKLNfw4muWFb1ljhxZeCrD9XmHJZ5Y8dV2Vrpufh-cQt6Voyhj4TColptZVlqwypfHd/pub?gid=1976706775&single=true&output=csv';
+
+function parseCSV(text){
+  const lines=text.trim().split('\n');
+  const headers=lines[0].split(',').map(h=>h.trim().replace(/"/g,''));
+  return lines.slice(1).map(line=>{
+    const vals=line.split(',').map(v=>v.trim().replace(/"/g,''));
+    const obj={};
+    headers.forEach((h,i)=>obj[h]=vals[i]||'');
+    return obj;
+  });
+}
+
+function pentagonPoint(cx,cy,r,angleIndex){
+  const angle=(angleIndex*72-90)*Math.PI/180;
+  return [cx+r*Math.cos(angle), cy+r*Math.sin(angle)];
+}
+
+function buildSpider(data, playerName){
+  const cx=170,cy=150,maxR=100;
+  const cats=[
+    {key:'Athleticism',label:'Athleticism',ax:0},
+    {key:'Running',label:'Running',ax:1},
+    {key:'Receiving',label:'Receiving',ax:2},
+    {key:'Pass Blocking',label:'Pass Pro',ax:3},
+    {key:'Draft Value',label:'Draft Value',ax:4},
+  ];
+
+  const player=data.find(p=>p['Player Name']===playerName);
+  if(!player) return;
+
+  const scores=cats.map(c=>parseFloat(player[c.key])||0);
+
+  // Build grid rings
+  let rings='';
+  [100,75,50,25].forEach(pct=>{
+    const pts=cats.map((_,i)=>pentagonPoint(cx,cy,maxR*(pct/100),i).join(',')).join(' ');
+    rings+=`<polygon points="${pts}" fill="none" stroke="var(--border)" stroke-width="0.5"/>`;
+  });
+
+  // Axis lines
+  let axes='';
+  cats.forEach((_,i)=>{
+    const [x,y]=pentagonPoint(cx,cy,maxR,i);
+    axes+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="var(--border)" stroke-width="0.5"/>`;
+  });
+
+  // Data polygon
+  const dataPoints=scores.map((s,i)=>pentagonPoint(cx,cy,maxR*(s/100),i).join(',')).join(' ');
+  const dots=scores.map((s,i)=>{const [x,y]=pentagonPoint(cx,cy,maxR*(s/100),i);return `<circle cx="${x}" cy="${y}" r="3" fill="var(--text)"/>`;}).join('');
+
+  // Labels — special x offset for Draft Value (axis 4)
+  const labelOffsets=[
+    {x:cx,y:cy-maxR-14,anchor:'middle'},         // Athleticism top
+    {x:cx+maxR*0.951+8,y:cy-maxR*0.309,anchor:'start'}, // Running top-right
+    {x:cx+maxR*0.588+8,y:cy+maxR*0.809+14,anchor:'middle'}, // Receiving bot-right
+    {x:cx-maxR*0.588-8,y:cy+maxR*0.809+14,anchor:'middle'}, // Pass Pro bot-left
+    {x:cx-maxR*0.951+10,y:cy-maxR*0.309,anchor:'end'},  // Draft Value top-left nudged right
+  ];
+  const labels=cats.map((c,i)=>`<text x="${labelOffsets[i].x}" y="${labelOffsets[i].y}" text-anchor="${labelOffsets[i].anchor}" class="axis-lbl">${c.label}</text>`).join('');
+
+  const svg=`<svg width="340" height="300" viewBox="0 0 340 300" role="img" aria-label="Spider chart for ${playerName}">
+    <title>${playerName} prospect spider chart</title>
+    ${rings}${axes}
+    <polygon points="${dataPoints}" fill="var(--text)" fill-opacity="0.08" stroke="var(--text)" stroke-width="1.5" stroke-linejoin="round"/>
+    ${dots}${labels}
+  </svg>`;
+
+  const wrap=document.getElementById('spider-wrap');
+  if(wrap) wrap.innerHTML=svg;
+}
+
+async function loadSpider(playerName){
+  try{
+    const resp=await fetch(RB_SHEET);
+    const data=parseCSV(await resp.text());
+    buildSpider(data,playerName);
+  }catch(e){console.log('Spider chart data unavailable');}
+}
+
+  loadSpider('Jeremiyah Love');
+
   function openSidebar(){
     document.getElementById('drawer').classList.add('open');
     document.getElementById('overlay').classList.add('open');
