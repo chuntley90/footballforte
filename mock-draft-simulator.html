@@ -9,14 +9,13 @@
     *{margin:0;padding:0;box-sizing:border-box}
     :root{
       --bg:#f8f8f6;--surface:#ffffff;--surface2:#f2f2f0;--border:#e0e0dc;
-      --text:#0a0a0a;--muted:#888880;--faint:#c8c8c4;--accent:#0a0a0a;
+      --text:#0a0a0a;--muted:#888880;--faint:#c8c8c4;
       --font-head:'Barlow Condensed',sans-serif;
       --font-body:'Barlow',sans-serif;
       --font-mono:'IBM Plex Mono',monospace;
     }
     body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh}
 
-    /* NAV */
     nav{background:rgba(248,248,246,0.97);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:200;backdrop-filter:blur(8px)}
     .nav-right{display:flex;align-items:center;gap:12px}
     .btn-sm{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:7px 16px;border-radius:3px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block}
@@ -38,97 +37,123 @@
     .sidebar-link:hover,.sidebar-link.active{color:var(--text);background:var(--bg)}
     .sidebar-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--faint);padding:1rem 1.5rem 0.5rem}
 
-    /* SCREENS */
-    .screen{display:none;max-width:1100px;margin:0 auto;padding:2rem}
+    .screen{display:none}
     .screen.active{display:block}
 
-    /* SETUP SCREEN */
-    .setup-title{font-family:var(--font-head);font-size:48px;font-weight:900;text-transform:uppercase;letter-spacing:-1px;margin-bottom:0.5rem}
-    .setup-sub{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:3rem}
-    .setup-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem;margin-bottom:3rem}
-    .setup-section{display:flex;flex-direction:column;gap:0.75rem}
-    .setup-label{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:0.25rem}
+    /* SETUP */
+    .setup-wrap{max-width:900px;margin:0 auto;padding:3rem 2rem}
+    .setup-title{font-family:var(--font-head);font-size:52px;font-weight:900;text-transform:uppercase;letter-spacing:-1px;margin-bottom:0.25rem}
+    .setup-sub{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:2.5rem}
+
+    /* MODE TABS */
+    .mode-tabs{display:flex;gap:0;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:2.5rem;width:fit-content}
+    .mode-tab{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 24px;background:transparent;border:none;color:var(--muted);cursor:pointer;transition:all 0.15s;border-right:1px solid var(--border)}
+    .mode-tab:last-child{border-right:none}
+    .mode-tab.active{background:var(--text);color:#fff}
+
+    /* MODE PANELS */
+    .mode-panel{display:none}
+    .mode-panel.active{display:block}
+
+    .setup-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem;margin-bottom:2.5rem}
+    .setup-section{display:flex;flex-direction:column;gap:0.5rem}
+    .setup-label{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
     .option-group{display:flex;gap:8px;flex-wrap:wrap}
-    .opt-btn{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 18px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s}
+    .opt-btn{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s}
     .opt-btn:hover{border-color:var(--text);color:var(--text)}
     .opt-btn.selected{background:var(--text);border-color:var(--text);color:#fff}
-    .start-btn{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px 40px;border-radius:3px;background:var(--text);border:1px solid var(--text);color:#fff;cursor:pointer;transition:opacity 0.2s}
+
+    /* SLEEPER INPUTS */
+    .sleeper-section{margin-bottom:2rem}
+    .sleeper-input-wrap{display:flex;gap:10px;align-items:flex-start;margin-top:0.5rem}
+    .sleeper-input{font-family:var(--font-mono);font-size:12px;padding:10px 14px;border:1px solid var(--border);border-radius:3px;background:var(--surface);color:var(--text);outline:none;width:260px;transition:border-color 0.2s}
+    .sleeper-input:focus{border-color:var(--text)}
+    .sleeper-input::placeholder{color:var(--faint)}
+    .fetch-btn{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:10px 20px;border-radius:3px;background:var(--text);border:1px solid var(--text);color:#fff;cursor:pointer;white-space:nowrap;transition:opacity 0.2s}
+    .fetch-btn:hover{opacity:0.8}
+    .fetch-btn:disabled{opacity:0.3;cursor:not-allowed}
+
+    .league-list{display:flex;flex-direction:column;gap:8px;margin-top:1rem}
+    .league-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:12px 16px;cursor:pointer;transition:all 0.15s}
+    .league-card:hover{border-color:var(--text)}
+    .league-card.selected{border-color:var(--text);background:var(--surface2)}
+    .league-name{font-family:var(--font-head);font-size:18px;font-weight:700;text-transform:uppercase;color:var(--text)}
+    .league-meta{font-family:var(--font-mono);font-size:9px;color:var(--muted);margin-top:2px;letter-spacing:0.5px}
+
+    .start-btn{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:12px 36px;border-radius:3px;background:var(--text);border:1px solid var(--text);color:#fff;cursor:pointer;transition:opacity 0.2s;margin-top:1rem}
     .start-btn:hover{opacity:0.8}
     .start-btn:disabled{opacity:0.3;cursor:not-allowed}
-    .loading-msg{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:1rem;letter-spacing:1px}
+    .msg{font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-top:0.75rem;letter-spacing:0.5px}
+    .msg.error{color:#c00}
 
     /* DRAFT SCREEN */
+    .draft-wrap{max-width:1100px;margin:0 auto;padding:2rem}
     .draft-layout{display:grid;grid-template-columns:1fr 320px;gap:2rem}
-    .draft-main{}
     .draft-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
     .draft-pick-info{font-family:var(--font-head);font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
     .draft-pick-sub{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
     .your-turn-badge{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:3px;background:var(--text);color:#fff}
     .cpu-badge{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:3px;background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
 
-    /* PLAYER LIST */
     .player-filters{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
     .pos-filter{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s}
     .pos-filter:hover{border-color:var(--text);color:var(--text)}
     .pos-filter.active{background:var(--text);border-color:var(--text);color:#fff}
-    .player-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:4px;overflow:hidden;max-height:420px;overflow-y:auto}
+
+    .player-list{border:1px solid var(--border);border-radius:4px;overflow:hidden;max-height:440px;overflow-y:auto}
     .player-list-header{display:grid;grid-template-columns:30px 1fr 50px 70px 70px;gap:0;padding:7px 12px;background:var(--surface2);border-bottom:1px solid var(--border);position:sticky;top:0}
     .player-list-header span{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:center}
     .player-list-header span:first-child,.player-list-header span:nth-child(2){text-align:left}
     .player-row{display:grid;grid-template-columns:30px 1fr 50px 70px 70px;gap:0;padding:8px 12px;border-bottom:1px solid var(--border);align-items:center;cursor:pointer;transition:background 0.1s}
     .player-row:last-child{border-bottom:none}
     .player-row:hover{background:var(--surface2)}
-    .player-row.drafted{opacity:0.3;pointer-events:none}
     .player-rank{font-family:var(--font-mono);font-size:9px;color:var(--faint)}
     .player-name{font-family:var(--font-head);font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:var(--text)}
-    .player-team{font-family:var(--font-mono);font-size:9px;color:var(--muted)}
-    .player-pos{font-family:var(--font-mono);font-size:9px;font-weight:500;text-align:center;padding:2px 6px;border-radius:2px}
-    .pos-RB{background:#f0f0ee;color:var(--text)}
-    .pos-WR{background:#f0f0ee;color:var(--text)}
-    .pos-QB{background:#f0f0ee;color:var(--text)}
-    .pos-TE{background:#f0f0ee;color:var(--text)}
+    .player-team-label{font-family:var(--font-mono);font-size:9px;color:var(--muted)}
+    .player-pos-badge{font-family:var(--font-mono);font-size:9px;font-weight:500;text-align:center;padding:2px 6px;border-radius:2px;background:#f0f0ee;color:var(--text)}
     .player-val{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-align:center}
-    .player-val.score{color:var(--text);font-weight:500}
+    .need-badge{font-family:var(--font-mono);font-size:8px;letter-spacing:0.5px;text-transform:uppercase;padding:1px 5px;border-radius:2px;background:var(--text);color:#fff;margin-left:4px;vertical-align:middle}
 
     /* DRAFT LOG */
     .draft-log{background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden}
-    .draft-log-header{padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface2)}
+    .draft-log-header{padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:space-between}
     .draft-log-title{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
-    .draft-log-list{max-height:500px;overflow-y:auto}
+    .draft-log-list{max-height:480px;overflow-y:auto}
     .log-entry{padding:8px 14px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:2px}
     .log-entry:last-child{border-bottom:none}
     .log-entry.yours{background:#fafaf8;border-left:3px solid var(--text)}
     .log-pick{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--faint)}
     .log-player{font-family:var(--font-head);font-size:15px;font-weight:700;text-transform:uppercase;color:var(--text)}
     .log-meta{font-family:var(--font-mono);font-size:9px;color:var(--muted)}
-    .log-team{font-family:var(--font-mono);font-size:9px;color:var(--muted)}
 
-    /* CPU PICK OVERLAY */
-    .cpu-thinking{display:none;position:fixed;bottom:2rem;right:2rem;background:var(--text);color:#fff;font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:10px 18px;border-radius:3px;z-index:500}
-    .cpu-thinking.show{display:block}
+    /* TEAM NEEDS PANEL */
+    .needs-panel{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1rem;margin-top:1rem}
+    .needs-title{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem}
+    .needs-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)}
+    .needs-row:last-child{border-bottom:none}
+    .needs-pos{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text)}
+    .needs-bar-wrap{flex:1;margin:0 10px;height:4px;background:var(--surface2);border-radius:2px;overflow:hidden}
+    .needs-bar{height:100%;background:var(--text);border-radius:2px;transition:width 0.3s}
+    .needs-val{font-family:var(--font-mono);font-size:9px;color:var(--muted);width:20px;text-align:right}
 
-    /* RESULTS SCREEN */
-    .results-title{font-family:var(--font-head);font-size:48px;font-weight:900;text-transform:uppercase;letter-spacing:-1px;margin-bottom:0.5rem}
+    /* RESULTS */
+    .results-wrap{max-width:1000px;margin:0 auto;padding:3rem 2rem}
+    .results-title{font-family:var(--font-head);font-size:48px;font-weight:900;text-transform:uppercase;letter-spacing:-1px;margin-bottom:0.25rem}
     .results-sub{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:2rem}
-    .your-picks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+    .your-picks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-bottom:2rem}
     .pick-card-result{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1rem}
-    .pick-card-result .round{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
-    .pick-card-result .name{font-family:var(--font-head);font-size:20px;font-weight:700;text-transform:uppercase;line-height:1;margin-bottom:4px}
-    .pick-card-result .meta{font-family:var(--font-mono);font-size:9px;color:var(--muted)}
-    .pick-card-result .ps{font-family:var(--font-head);font-size:28px;font-weight:900;color:var(--text);margin-top:8px}
-    .pick-card-result .ps-label{font-family:var(--font-mono);font-size:8px;color:var(--faint);text-transform:uppercase;letter-spacing:1px}
+    .pick-card-result .rnd{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
+    .pick-card-result .nm{font-family:var(--font-head);font-size:20px;font-weight:700;text-transform:uppercase;line-height:1;margin-bottom:4px;color:var(--text)}
+    .pick-card-result .mt{font-family:var(--font-mono);font-size:9px;color:var(--muted)}
     .restart-btn{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:12px 32px;border-radius:3px;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all 0.2s}
     .restart-btn:hover{border-color:var(--text);color:var(--text)}
 
-    footer{border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:3rem}
+    footer{border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:2rem}
     .footer-copy{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
     .footer-links{display:flex;gap:1.5rem}
     .footer-links a{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:1px}
 
-    @media(max-width:768px){
-      .draft-layout{grid-template-columns:1fr}
-      .setup-grid{grid-template-columns:1fr}
-    }
+    @media(max-width:768px){.draft-layout{grid-template-columns:1fr}.setup-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -140,11 +165,10 @@
     <button class="sidebar-close" onclick="closeSidebar()">✕</button>
   </div>
   <div class="sidebar-nav">
-        <div class="sidebar-label">Navigation</div>
+    <div class="sidebar-label">Navigation</div>
     <a href="index.html" class="sidebar-link">Home</a>
     <a href="articles.html" class="sidebar-link">Articles</a>
-    <a href="mock-draft-simulator.html" class="sidebar-link">Mock Draft Simulator</a>
-  
+    <a href="mock-draft-simulator.html" class="sidebar-link active">Mock Draft Simulator</a>
   </div>
 </div>
 
@@ -155,63 +179,94 @@
     </button>
     <img src="logo.jpeg" alt="Football Forte" style="height:36px;display:block">
   </div>
-  <div class="nav-right">
-    <a href="#" class="btn-sm btn-ghost">Sign<br>in</a>
-    <a href="#" class="btn-sm btn-solid">Join Free</a>
-  </div>
+  
 </nav>
 
 <!-- SETUP SCREEN -->
 <div class="screen active" id="screen-setup">
-  <div style="padding:2rem;max-width:900px;margin:0 auto">
-    <div class="setup-title">Mock Draft<br>Simulator</div>
+  <div class="setup-wrap">
+    <div class="setup-title">Mock Draft Simulator</div>
     <div class="setup-sub">2026 Rookie Draft · Football Forte Model</div>
 
-    <div class="setup-grid">
-      <div class="setup-section">
-        <div class="setup-label">League Size</div>
-        <div class="option-group" id="teams-group">
-          <button class="opt-btn" data-val="10" onclick="selectOpt('teams',this)">10 Teams</button>
-          <button class="opt-btn selected" data-val="12" onclick="selectOpt('teams',this)">12 Teams</button>
-          <button class="opt-btn" data-val="14" onclick="selectOpt('teams',this)">14 Teams</button>
-        </div>
-      </div>
-
-      <div class="setup-section">
-        <div class="setup-label">Rounds</div>
-        <div class="option-group" id="rounds-group">
-          <button class="opt-btn" data-val="2" onclick="selectOpt('rounds',this)">2</button>
-          <button class="opt-btn selected" data-val="3" onclick="selectOpt('rounds',this)">3</button>
-          <button class="opt-btn" data-val="4" onclick="selectOpt('rounds',this)">4</button>
-        </div>
-      </div>
-
-      <div class="setup-section">
-        <div class="setup-label">Your Draft Position</div>
-        <div class="option-group" id="pos-group" style="flex-wrap:wrap;max-width:280px">
-        </div>
-      </div>
+    <div class="mode-tabs">
+      <button class="mode-tab active" onclick="setMode('manual',this)">Manual Setup</button>
+      <button class="mode-tab" onclick="setMode('sleeper',this)">Import from Sleeper</button>
     </div>
 
-    <button class="start-btn" id="start-btn" onclick="startDraft()">Start Draft</button>
-    <div class="loading-msg" id="loading-msg" style="display:none">Loading player data from Google Sheets...</div>
-    <div class="loading-msg" id="error-msg" style="display:none;color:#c00">Could not load player data. Check your connection and try again.</div>
+    <!-- MANUAL MODE -->
+    <div class="mode-panel active" id="panel-manual">
+      <div class="setup-grid">
+        <div class="setup-section">
+          <div class="setup-label">League Size</div>
+          <div class="option-group" id="teams-group">
+            <button class="opt-btn" data-val="10" onclick="selectManual('teams',this)">10</button>
+            <button class="opt-btn selected" data-val="12" onclick="selectManual('teams',this)">12</button>
+            <button class="opt-btn" data-val="14" onclick="selectManual('teams',this)">14</button>
+          </div>
+        </div>
+        <div class="setup-section">
+          <div class="setup-label">Rounds</div>
+          <div class="option-group" id="rounds-group">
+            <button class="opt-btn" data-val="2" onclick="selectManual('rounds',this)">2</button>
+            <button class="opt-btn selected" data-val="3" onclick="selectManual('rounds',this)">3</button>
+            <button class="opt-btn" data-val="4" onclick="selectManual('rounds',this)">4</button>
+          </div>
+        </div>
+        <div class="setup-section">
+          <div class="setup-label">Your Draft Position</div>
+          <div class="option-group" id="pos-group" style="flex-wrap:wrap"></div>
+        </div>
+      </div>
+      <button class="start-btn" id="manual-start-btn" onclick="startManualDraft()">Start Draft</button>
+      <div class="msg" id="manual-loading" style="display:none">Loading player data...</div>
+      <div class="msg error" id="manual-error" style="display:none">Could not load player data. Check your connection and try again.</div>
+    </div>
+
+    <!-- SLEEPER MODE -->
+    <div class="mode-panel" id="panel-sleeper">
+      <div class="sleeper-section">
+        <div class="setup-label">Sleeper Username</div>
+        <div class="sleeper-input-wrap">
+          <input class="sleeper-input" id="sleeper-username" type="text" placeholder="Enter your Sleeper username" />
+          <button class="fetch-btn" id="fetch-leagues-btn" onclick="fetchSleeperLeagues()">Find Leagues</button>
+        </div>
+        <div class="msg" id="sleeper-loading" style="display:none">Looking up your leagues...</div>
+        <div class="msg error" id="sleeper-error" style="display:none"></div>
+      </div>
+
+      <div id="league-select-section" style="display:none">
+        <div class="setup-label" style="margin-bottom:0.5rem">Select Your League</div>
+        <div class="league-list" id="league-list"></div>
+      </div>
+
+      <div id="rounds-select-section" style="display:none;margin-top:1.5rem">
+        <div class="setup-label">Rounds</div>
+        <div class="option-group" id="sleeper-rounds-group" style="margin-top:0.5rem">
+          <button class="opt-btn" data-val="2" onclick="selectSleeperRounds(this)">2</button>
+          <button class="opt-btn selected" data-val="3" onclick="selectSleeperRounds(this)">3</button>
+          <button class="opt-btn" data-val="4" onclick="selectSleeperRounds(this)">4</button>
+        </div>
+        <div class="msg" id="sleeper-league-info" style="margin-top:0.75rem"></div>
+      </div>
+
+      <button class="start-btn" id="sleeper-start-btn" onclick="startSleeperDraft()" style="display:none">Start Draft</button>
+      <div class="msg error" id="sleeper-start-error" style="display:none"></div>
+    </div>
   </div>
 </div>
 
 <!-- DRAFT SCREEN -->
 <div class="screen" id="screen-draft">
-  <div style="padding:2rem;max-width:1100px;margin:0 auto">
+  <div class="draft-wrap">
     <div class="draft-layout">
-      <div class="draft-main">
+      <div>
         <div class="draft-header">
           <div>
             <div class="draft-pick-info" id="pick-info">Pick 1.01</div>
-            <div class="draft-pick-sub" id="pick-sub">Round 1 of 3 · Team 1 on the clock</div>
+            <div class="draft-pick-sub" id="pick-sub">Round 1 · Team 1 on the clock</div>
           </div>
           <div id="turn-badge" class="your-turn-badge">Your Pick</div>
         </div>
-
         <div class="player-filters">
           <button class="pos-filter active" onclick="filterPos('ALL',this)">All</button>
           <button class="pos-filter" onclick="filterPos('QB',this)">QB</button>
@@ -219,15 +274,9 @@
           <button class="pos-filter" onclick="filterPos('WR',this)">WR</button>
           <button class="pos-filter" onclick="filterPos('TE',this)">TE</button>
         </div>
-
         <div class="player-list">
           <div class="player-list-header">
-            <span>Rank</span>
-            <span>Player</span>
-            <span>Pos</span>
-            <span>FP ADP</span>
-            <span>Your ADP</span>
-            
+            <span>Rank</span><span>Player</span><span>Pos</span><span>FP ADP</span><span>Your ADP</span>
           </div>
           <div id="player-rows"></div>
         </div>
@@ -237,8 +286,13 @@
         <div class="draft-log">
           <div class="draft-log-header">
             <div class="draft-log-title">Draft Board</div>
+            <div id="current-team-label" style="font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:0.5px"></div>
           </div>
           <div class="draft-log-list" id="draft-log"></div>
+        </div>
+        <div class="needs-panel" id="needs-panel" style="display:none">
+          <div class="needs-title">Current Team Needs</div>
+          <div id="needs-rows"></div>
         </div>
       </div>
     </div>
@@ -247,15 +301,13 @@
 
 <!-- RESULTS SCREEN -->
 <div class="screen" id="screen-results">
-  <div style="padding:2rem;max-width:1100px;margin:0 auto">
+  <div class="results-wrap">
     <div class="results-title">Your Draft</div>
-    <div class="results-sub" id="results-sub">3 rounds · Pick 1.06</div>
+    <div class="results-sub" id="results-sub"></div>
     <div class="your-picks-grid" id="your-picks-grid"></div>
     <button class="restart-btn" onclick="restartDraft()">Draft Again</button>
   </div>
 </div>
-
-<div class="cpu-thinking" id="cpu-thinking">CPU picking...</div>
 
 <footer>
   <div class="footer-copy">© 2025 footballforte.com</div>
@@ -267,46 +319,67 @@
 
 <script>
 const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR0sKY8qaTQQFKLNfw4muWFb1ljhxZeCrD9XmHJZ5Y8dV2Vrpufh-cQt6Voyhj4TColptZVlqwypfHd/pub?output=csv';
+const SLEEPER_API = 'https://api.sleeper.app/v1';
 
-let settings = { teams: 12, rounds: 3, draftPos: 1 };
+// State
 let players = [];
 let draftedIds = new Set();
 let draftLog = [];
+let yourPicks = [];
 let currentPick = 0;
 let totalPicks = 0;
-let yourPicks = [];
 let posFilter = 'ALL';
+let draftMode = 'manual';
+let sleeperRosters = {}; // teamIndex -> {QB:[], RB:[], WR:[], TE:[]}
+let leagueSettings = { teams: 12, rounds: 3, draftPos: 1, superflex: false, starterSlots: {QB:1, RB:2, WR:3, TE:1} };
+let selectedLeague = null;
+let sleeperRounds = 3;
+let draftOrder = []; // array of team indices in snake order
 
+// NAV
 function openSidebar(){ document.getElementById('drawer').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
 function closeSidebar(){ document.getElementById('drawer').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
 
-function selectOpt(group, btn) {
-  document.querySelectorAll(`#${group}-group .opt-btn`).forEach(b => b.classList.remove('selected'));
+// MODE
+function setMode(mode, btn) {
+  draftMode = mode;
+  document.querySelectorAll('.mode-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.mode-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + mode).classList.add('active');
+}
+
+// MANUAL SETUP
+function selectManual(key, btn) {
+  const groupId = key === 'teams' ? 'teams-group' : key === 'rounds' ? 'rounds-group' : 'pos-group';
+  document.querySelectorAll('#' + groupId + ' .opt-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
-  settings[group] = parseInt(btn.dataset.val);
-  if(group === 'teams') buildPosOptions();
+  leagueSettings[key] = parseInt(btn.dataset.val);
+  if(key === 'teams') buildPosOptions();
 }
 
 function buildPosOptions() {
   const g = document.getElementById('pos-group');
   g.innerHTML = '';
-  for(let i = 1; i <= settings.teams; i++) {
+  for(let i = 1; i <= leagueSettings.teams; i++) {
     const b = document.createElement('button');
-    b.className = 'opt-btn' + (i === settings.draftPos ? ' selected' : '');
+    b.className = 'opt-btn' + (i === leagueSettings.draftPos ? ' selected' : '');
     b.dataset.val = i;
     b.textContent = i;
-    b.onclick = function(){ selectOpt('draftPos', this); settings.draftPos = i; };
+    b.onclick = function(){
+      document.querySelectorAll('#pos-group .opt-btn').forEach(x => x.classList.remove('selected'));
+      this.classList.add('selected');
+      leagueSettings.draftPos = parseInt(this.dataset.val);
+    };
     g.appendChild(b);
   }
 }
 
-function selectOpt(group, btn) {
-  const groupId = group === 'teams' ? 'teams-group' : group === 'rounds' ? 'rounds-group' : 'pos-group';
-  document.querySelectorAll(`#${groupId} .opt-btn`).forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  if(group === 'teams'){ settings.teams = parseInt(btn.dataset.val); buildPosOptions(); }
-  else if(group === 'rounds') settings.rounds = parseInt(btn.dataset.val);
-  else { settings.draftPos = parseInt(btn.dataset.val); }
+async function loadPlayers() {
+  const resp = await fetch(SHEET_URL);
+  if(!resp.ok) throw new Error('fetch failed');
+  const text = await resp.text();
+  return parseCSV(text);
 }
 
 function parseCSV(text) {
@@ -317,74 +390,237 @@ function parseCSV(text) {
     const obj = {};
     headers.forEach((h, i) => obj[h] = vals[i] || '');
     obj.id = idx;
-    obj.drafted = false;
     return obj;
   }).filter(p => p['Player Name']);
 }
 
+async function startManualDraft() {
+  const btn = document.getElementById('manual-start-btn');
+  const loading = document.getElementById('manual-loading');
+  const err = document.getElementById('manual-error');
+  btn.disabled = true; loading.style.display = 'block'; err.style.display = 'none';
+  try {
+    players = await loadPlayers();
+    if(!players.length) throw new Error('no players');
+  } catch(e) { loading.style.display = 'none'; err.style.display = 'block'; btn.disabled = false; return; }
+  loading.style.display = 'none';
+  sleeperRosters = {};
+  initDraft(leagueSettings.teams, leagueSettings.rounds, leagueSettings.draftPos);
+}
+
+// SLEEPER SETUP
+let sleeperUserId = null;
+let sleeperLeagues = [];
+
+function selectSleeperRounds(btn) {
+  document.querySelectorAll('#sleeper-rounds-group .opt-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  sleeperRounds = parseInt(btn.dataset.val);
+}
+
+async function fetchSleeperLeagues() {
+  const username = document.getElementById('sleeper-username').value.trim();
+  if(!username) return;
+  const btn = document.getElementById('fetch-leagues-btn');
+  const loading = document.getElementById('sleeper-loading');
+  const err = document.getElementById('sleeper-error');
+  btn.disabled = true; loading.style.display = 'block'; err.style.display = 'none';
+  document.getElementById('league-select-section').style.display = 'none';
+  document.getElementById('rounds-select-section').style.display = 'none';
+  document.getElementById('sleeper-start-btn').style.display = 'none';
+
+  try {
+    const userResp = await fetch(`${SLEEPER_API}/user/${username}`);
+    if(!userResp.ok) throw new Error('User not found');
+    const user = await userResp.json();
+    sleeperUserId = user.user_id;
+
+    const leaguesResp = await fetch(`${SLEEPER_API}/user/${sleeperUserId}/leagues/nfl/2025`);
+    const leagues = await leaguesResp.json();
+    if(!leagues || !leagues.length) throw new Error('No leagues found for this user');
+
+    // Filter to dynasty leagues
+    sleeperLeagues = leagues.filter(l => l.settings && (l.settings.type === 2 || l.name.toLowerCase().includes('dynasty')));
+    if(!sleeperLeagues.length) sleeperLeagues = leagues; // fallback to all
+
+    loading.style.display = 'none';
+    renderLeagueList();
+    document.getElementById('league-select-section').style.display = 'block';
+  } catch(e) {
+    loading.style.display = 'none';
+    err.style.display = 'block';
+    err.textContent = e.message === 'User not found' ? 'Sleeper username not found. Check your spelling and try again.' : 'Could not load leagues. Make sure your Sleeper account is public.';
+    btn.disabled = false;
+  }
+  btn.disabled = false;
+}
+
+function renderLeagueList() {
+  const list = document.getElementById('league-list');
+  list.innerHTML = sleeperLeagues.map((l, i) => `
+    <div class="league-card" onclick="selectLeague(${i})">
+      <div class="league-name">${l.name}</div>
+      <div class="league-meta">${l.total_rosters} teams · Season ${l.season} · ${l.settings && l.settings.type === 2 ? 'Dynasty' : 'Redraft'}</div>
+    </div>
+  `).join('');
+}
+
+async function selectLeague(idx) {
+  document.querySelectorAll('.league-card').forEach((c,i) => c.classList.toggle('selected', i === idx));
+  selectedLeague = sleeperLeagues[idx];
+
+  document.getElementById('rounds-select-section').style.display = 'none';
+  document.getElementById('sleeper-start-btn').style.display = 'none';
+  document.getElementById('sleeper-league-info').textContent = 'Loading league details...';
+  document.getElementById('rounds-select-section').style.display = 'block';
+
+  try {
+    // Get league details for roster settings
+    const detailResp = await fetch(`${SLEEPER_API}/league/${selectedLeague.league_id}`);
+    const detail = await detailResp.json();
+
+    // Detect superflex
+    const rp = detail.roster_positions || [];
+    const isSF = rp.filter(p => p === 'SUPER_FLEX' || p === 'QB').length > 1;
+    leagueSettings.superflex = isSF;
+
+    // Count starter slots
+    const slots = {QB:0, RB:0, WR:0, TE:0, FLEX:0};
+    rp.forEach(p => {
+      if(p === 'QB') slots.QB++;
+      else if(p === 'RB') slots.RB++;
+      else if(p === 'WR') slots.WR++;
+      else if(p === 'TE') slots.TE++;
+      else if(p === 'FLEX' || p === 'RB,WR,TE') slots.FLEX++;
+      else if(p === 'SUPER_FLEX') { slots.QB++; slots.FLEX++; }
+    });
+    leagueSettings.starterSlots = slots;
+    leagueSettings.teams = selectedLeague.total_rosters;
+
+    document.getElementById('sleeper-league-info').textContent =
+      `${selectedLeague.total_rosters} teams · ${isSF ? 'Superflex' : '1QB'} · ${slots.QB}QB ${slots.RB}RB ${slots.WR}WR ${slots.TE}TE${slots.FLEX ? ' ' + slots.FLEX + 'FLEX' : ''}`;
+
+    document.getElementById('sleeper-start-btn').style.display = 'block';
+  } catch(e) {
+    document.getElementById('sleeper-league-info').textContent = 'Could not load league details.';
+  }
+}
+
+async function startSleeperDraft() {
+  if(!selectedLeague) return;
+  const btn = document.getElementById('sleeper-start-btn');
+  const err = document.getElementById('sleeper-start-error');
+  btn.disabled = true; err.style.display = 'none';
+  btn.textContent = 'Loading...';
+
+  try {
+    players = await loadPlayers();
+
+    // Load all rosters
+    const rostersResp = await fetch(`${SLEEPER_API}/league/${selectedLeague.league_id}/rosters`);
+    const rosters = await rostersResp.json();
+    const usersResp = await fetch(`${SLEEPER_API}/league/${selectedLeague.league_id}/users`);
+    const users = await usersResp.json();
+
+    // Map user_id to display name
+    const userMap = {};
+    users.forEach(u => userMap[u.user_id] = u.display_name || u.username);
+
+    // Build roster needs per team
+    sleeperRosters = {};
+    rosters.forEach((r, i) => {
+      const playerIds = r.players || [];
+      // We don't have position data per player_id without a large lookup
+      // Use player count as proxy — will be enhanced later
+      sleeperRosters[i] = {
+        owner: userMap[r.owner_id] || `Team ${i+1}`,
+        roster_id: r.roster_id,
+        playerCount: playerIds.length,
+        // Positional counts would require Sleeper player DB lookup
+        QB: 0, RB: 0, WR: 0, TE: 0
+      };
+    });
+
+    // Try to get draft order from Sleeper drafts
+    let draftPos = 1;
+    try {
+      const draftsResp = await fetch(`${SLEEPER_API}/league/${selectedLeague.league_id}/drafts`);
+      const drafts = await draftsResp.json();
+      if(drafts && drafts.length) {
+        const latestDraft = drafts[0];
+        const draftOrderMap = latestDraft.draft_order || {};
+        // Find user's position
+        const myPos = draftOrderMap[sleeperUserId];
+        if(myPos) draftPos = myPos;
+      }
+    } catch(e) {}
+
+    leagueSettings.draftPos = draftPos;
+    leagueSettings.rounds = sleeperRounds;
+
+    initDraft(leagueSettings.teams, sleeperRounds, draftPos);
+  } catch(e) {
+    err.style.display = 'block';
+    err.textContent = 'Could not load league data. Try again.';
+    btn.disabled = false;
+    btn.textContent = 'Start Draft';
+  }
+}
+
+// DRAFT ENGINE
 function getADP(p) {
   const yourAdp = parseFloat(p['Your ADP']);
   const fpAdp = parseFloat(p['FantasyPros ADP']);
   const ffc = parseFloat(p['FFC ADP']);
   const vals = [yourAdp, fpAdp, ffc].filter(v => !isNaN(v));
-  if(vals.length === 0) return 999;
-  return vals.reduce((a,b) => a+b, 0) / vals.length;
+  if(!vals.length) return 999;
+  // Weight Your ADP higher if available
+  if(!isNaN(yourAdp) && !isNaN(fpAdp)) return yourAdp * 0.5 + fpAdp * 0.5;
+  return vals.reduce((a,b) => a+b,0) / vals.length;
 }
 
-function sortedAvailable() {
-  return players
-    .filter(p => !draftedIds.has(p.id))
-    .sort((a,b) => getADP(a) - getADP(b));
-}
-
-async function startDraft() {
-  const btn = document.getElementById('start-btn');
-  const loadMsg = document.getElementById('loading-msg');
-  const errMsg = document.getElementById('error-msg');
-  btn.disabled = true;
-  loadMsg.style.display = 'block';
-  errMsg.style.display = 'none';
-
-  try {
-    const resp = await fetch(SHEET_URL);
-    if(!resp.ok) throw new Error('fetch failed');
-    const text = await resp.text();
-    players = parseCSV(text);
-    if(players.length === 0) throw new Error('no players');
-  } catch(e) {
-    loadMsg.style.display = 'none';
-    errMsg.style.display = 'block';
-    btn.disabled = false;
-    return;
+function buildSnakeOrder(teams, rounds) {
+  const order = [];
+  for(let r = 0; r < rounds; r++) {
+    const round = [];
+    for(let t = 0; t < teams; t++) round.push(t);
+    if(r % 2 === 1) round.reverse();
+    order.push(...round);
   }
+  return order;
+}
 
-  loadMsg.style.display = 'none';
+function initDraft(teams, rounds, draftPos) {
   draftedIds = new Set();
   draftLog = [];
   yourPicks = [];
   currentPick = 0;
-  totalPicks = settings.teams * settings.rounds;
+  totalPicks = teams * rounds;
+  draftOrder = buildSnakeOrder(teams, rounds);
+  leagueSettings.draftPos = draftPos;
+  leagueSettings.teams = teams;
+  leagueSettings.rounds = rounds;
+
+  // Show needs panel only in Sleeper mode
+  document.getElementById('needs-panel').style.display = draftMode === 'sleeper' ? 'block' : 'none';
 
   showScreen('draft');
   renderPlayerList();
   advancePick();
 }
 
-function pickForRound(pickNum) {
-  const round = Math.floor(pickNum / settings.teams) + 1;
-  const posInRound = pickNum % settings.teams;
-  if(round % 2 === 1) return posInRound + 1;
-  else return settings.teams - posInRound;
-}
-
-function isYourPick(pickNum) {
-  return pickForRound(pickNum) === settings.draftPos;
-}
+function teamAtPick(pickNum) { return draftOrder[pickNum]; }
+function isYourPick(pickNum) { return teamAtPick(pickNum) === leagueSettings.draftPos - 1; }
 
 function pickLabel(pickNum) {
-  const round = Math.floor(pickNum / settings.teams) + 1;
-  const slot = pickForRound(pickNum);
+  const round = Math.floor(pickNum / leagueSettings.teams) + 1;
+  const slot = (pickNum % leagueSettings.teams) + 1;
   return `${round}.${String(slot).padStart(2,'0')}`;
+}
+
+function getTeamName(teamIdx) {
+  if(draftMode === 'sleeper' && sleeperRosters[teamIdx]) return sleeperRosters[teamIdx].owner;
+  return `Team ${teamIdx + 1}`;
 }
 
 function advancePick() {
@@ -398,38 +634,70 @@ function advancePick() {
     document.getElementById('turn-badge').className = 'cpu-badge';
     document.getElementById('turn-badge').textContent = 'CPU Picking';
     renderPlayerList();
-    setTimeout(cpuPick, 700 + Math.random() * 600);
+    setTimeout(cpuPick, 600 + Math.random() * 700);
   }
 }
 
+function getNeedScore(teamIdx, pos) {
+  if(draftMode !== 'sleeper' || !sleeperRosters[teamIdx]) return 1;
+  const roster = sleeperRosters[teamIdx];
+  const slots = leagueSettings.starterSlots;
+  const needed = {
+    QB: Math.max(0, (slots.QB || 1) - (roster.QB || 0)),
+    RB: Math.max(0, (slots.RB || 2) - (roster.RB || 0)),
+    WR: Math.max(0, (slots.WR || 3) - (roster.WR || 0)),
+    TE: Math.max(0, (slots.TE || 1) - (roster.TE || 0))
+  };
+  // QB gets big boost in superflex
+  if(pos === 'QB' && leagueSettings.superflex) return (needed.QB + 1) * 1.8;
+  return (needed[pos] || 0) + 1;
+}
+
 function cpuPick() {
-  const available = sortedAvailable();
-  if(available.length === 0) return;
-  // CPU picks with some randomness around ADP rank
-  const topN = Math.min(3, available.length);
-  const pick = available[Math.floor(Math.random() * topN)];
+  const teamIdx = teamAtPick(currentPick);
+  const available = players.filter(p => !draftedIds.has(p.id));
+  if(!available.length) return;
+
+  // Score each player: ADP rank * need multiplier
+  const sorted = [...available].sort((a,b) => getADP(a) - getADP(b));
+  const scored = sorted.slice(0, 15).map((p, rank) => {
+    const needMult = getNeedScore(teamIdx, p['Position']);
+    return { p, score: needMult / (rank + 1) };
+  });
+  scored.sort((a,b) => b.score - a.score);
+
+  // Pick from top 3 with some randomness
+  const pick = scored[Math.floor(Math.random() * Math.min(3, scored.length))].p;
   draftPlayer(pick, false);
 }
 
 function draftPlayer(player, isYours) {
   draftedIds.add(player.id);
-  const entry = { player, pick: currentPick, label: pickLabel(currentPick), isYours };
+  const teamIdx = teamAtPick(currentPick);
+
+  // Update roster counts for Sleeper mode
+  if(draftMode === 'sleeper' && sleeperRosters[teamIdx]) {
+    const pos = player['Position'];
+    if(sleeperRosters[teamIdx][pos] !== undefined) sleeperRosters[teamIdx][pos]++;
+  }
+
+  const entry = { player, pick: currentPick, label: pickLabel(currentPick), isYours, team: getTeamName(teamIdx) };
   draftLog.push(entry);
   if(isYours) yourPicks.push(entry);
 
   addLogEntry(entry);
   currentPick++;
   renderPlayerList();
-  setTimeout(advancePick, isYours ? 0 : 300);
+  updateNeedsPanel();
+  setTimeout(advancePick, isYours ? 0 : 200);
 }
 
 function addLogEntry(entry) {
   const log = document.getElementById('draft-log');
   const div = document.createElement('div');
   div.className = 'log-entry' + (entry.isYours ? ' yours' : '');
-
   div.innerHTML = `
-    <div class="log-pick">${entry.label}${entry.isYours ? ' · Your Pick' : ''}</div>
+    <div class="log-pick">${entry.label} · ${entry.team}</div>
     <div class="log-player">${entry.player['Player Name']}</div>
     <div class="log-meta">${entry.player['Position']} · ${entry.player['NFL Team'] || 'FA'}</div>
   `;
@@ -437,34 +705,55 @@ function addLogEntry(entry) {
 }
 
 function updatePickHeader() {
-  const round = Math.floor(currentPick / settings.teams) + 1;
-  const slot = pickForRound(currentPick);
+  const teamIdx = teamAtPick(currentPick);
   document.getElementById('pick-info').textContent = `Pick ${pickLabel(currentPick)}`;
-  document.getElementById('pick-sub').textContent = `Round ${round} of ${settings.rounds} · Team ${slot} on the clock`;
+  document.getElementById('pick-sub').textContent = `Round ${Math.floor(currentPick/leagueSettings.teams)+1} · ${getTeamName(teamIdx)} on the clock`;
+  document.getElementById('current-team-label').textContent = getTeamName(teamIdx);
+}
+
+function updateNeedsPanel() {
+  if(draftMode !== 'sleeper') return;
+  const teamIdx = currentPick < totalPicks ? teamAtPick(currentPick) : -1;
+  if(teamIdx < 0 || !sleeperRosters[teamIdx]) return;
+  const roster = sleeperRosters[teamIdx];
+  const slots = leagueSettings.starterSlots;
+  const positions = ['QB','RB','WR','TE'];
+  const maxNeed = 5;
+  document.getElementById('needs-rows').innerHTML = positions.map(pos => {
+    const have = roster[pos] || 0;
+    const need = Math.max(0, (slots[pos] || 0) - have);
+    const pct = Math.min(100, (need / maxNeed) * 100);
+    return `<div class="needs-row">
+      <div class="needs-pos">${pos}</div>
+      <div class="needs-bar-wrap"><div class="needs-bar" style="width:${pct}%"></div></div>
+      <div class="needs-val">${need}</div>
+    </div>`;
+  }).join('');
 }
 
 function renderPlayerList() {
   const container = document.getElementById('player-rows');
+  const isYourTurn = currentPick < totalPicks && isYourPick(currentPick);
+  const teamIdx = currentPick < totalPicks ? teamAtPick(currentPick) : -1;
+
   const available = players.filter(p => !draftedIds.has(p.id));
   const filtered = posFilter === 'ALL' ? available : available.filter(p => p['Position'] === posFilter);
   const sorted = filtered.sort((a,b) => getADP(a) - getADP(b));
 
   container.innerHTML = sorted.slice(0, 80).map((p, i) => {
-    const adp = getADP(p);
-    const yourAdp = p['Your ADP'] ? parseFloat(p['Your ADP']).toFixed(1) : '—';
     const fpAdp = p['FantasyPros ADP'] ? parseFloat(p['FantasyPros ADP']).toFixed(1) : '—';
-
-    const isYourTurn = isYourPick(currentPick);
-    return `<div class="player-row" onclick="${isYourTurn ? `selectPlayer(${p.id})` : ''}">
+    const yourAdp = p['Your ADP'] ? parseFloat(p['Your ADP']).toFixed(1) : '—';
+    const needScore = draftMode === 'sleeper' && teamIdx >= 0 ? getNeedScore(teamIdx, p['Position']) : 0;
+    const needTag = needScore > 2 ? '<span class="need-badge">Need</span>' : '';
+    return `<div class="player-row" style="${isYourTurn ? '' : 'cursor:default;opacity:0.7'}" onclick="${isYourTurn ? `selectPlayer(${p.id})` : ''}">
       <div class="player-rank">${i+1}</div>
       <div>
-        <div class="player-name">${p['Player Name']}</div>
-        <div class="player-team">${p['NFL Team'] || 'FA'}</div>
+        <div class="player-name">${p['Player Name']}${needTag}</div>
+        <div class="player-team-label">${p['NFL Team'] || 'FA'}</div>
       </div>
-      <div><span class="player-pos pos-${p['Position']}">${p['Position']}</span></div>
+      <div><span class="player-pos-badge">${p['Position']}</span></div>
       <div class="player-val">${fpAdp}</div>
       <div class="player-val">${yourAdp}</div>
-
     </div>`;
   }).join('');
 }
@@ -485,26 +774,17 @@ function filterPos(pos, btn) {
 
 function endDraft() {
   showScreen('results');
-  document.getElementById('results-sub').textContent = `${settings.rounds} rounds · Draft position ${settings.draftPos}`;
-  const grid = document.getElementById('your-picks-grid');
-  grid.innerHTML = yourPicks.map(entry => {
-    const p = entry.player;
-
-
-    return `<div class="pick-card-result">
-      <div class="round">${entry.label}</div>
-      <div class="name">${p['Player Name']}</div>
-      <div class="meta">${p['Position']} · ${p['NFL Team'] || 'FA'}</div>
-
-    </div>`;
-  }).join('');
+  document.getElementById('results-sub').textContent = `${leagueSettings.rounds} rounds · Draft position ${leagueSettings.draftPos}`;
+  document.getElementById('your-picks-grid').innerHTML = yourPicks.map(e => `
+    <div class="pick-card-result">
+      <div class="rnd">${e.label}</div>
+      <div class="nm">${e.player['Player Name']}</div>
+      <div class="mt">${e.player['Position']} · ${e.player['NFL Team'] || 'FA'}</div>
+    </div>
+  `).join('');
 }
 
-function restartDraft() {
-  showScreen('setup');
-  document.getElementById('start-btn').disabled = false;
-}
-
+function restartDraft() { showScreen('setup'); }
 function showScreen(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + name).classList.add('active');

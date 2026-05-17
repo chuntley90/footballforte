@@ -36,7 +36,7 @@
     .sidebar-link{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:0.9rem 1.5rem;border-bottom:1px solid var(--border);transition:all 0.15s}
     .sidebar-link:hover,.sidebar-link.active{color:var(--text);background:var(--bg)}
     .sidebar-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--faint);padding:1rem 1.5rem 0.5rem}
-    .hero{padding:4rem 2rem 3rem;border-bottom:1px solid var(--border);background:var(--bg)}
+    .hero{padding:4rem 2rem 3rem;border-bottom:1px solid var(--border);background:var(--bg);position:relative;overflow:hidden}
     .hero h1{font-family:var(--font-head);font-size:64px;font-weight:900;line-height:0.95;letter-spacing:-1px;text-transform:uppercase;margin-bottom:1.5rem;color:var(--text);text-align:center}
     .hero h1 em{font-style:normal}
     .hero-sub{color:var(--muted);font-size:15px;margin-bottom:2rem;font-weight:300;text-align:center}
@@ -138,6 +138,7 @@
     <a href="index.html" class="sidebar-link">Home</a>
     <a href="articles.html" class="sidebar-link">Articles</a>
     <a href="mock-draft-simulator.html" class="sidebar-link">Mock Draft Simulator</a>
+    <a href="nfl-power-rankings.html" class="sidebar-link">NFL Power Rankings</a>
   
   </div>
 </div>
@@ -149,16 +150,14 @@
     </button>
     <img src="logo.jpeg" alt="Football Forte" style="height:36px;display:block">
   </div>
-  <div class="nav-right">
-    <a href="#" class="btn-sm btn-ghost">Sign<br>in</a>
-    <a href="#" class="btn-sm btn-solid">Join Free</a>
-  </div>
+  
 </nav>
 
 <div class="hero">
-  <h1>Football Is Our <em>Forte</em></h1>
-  <p class="hero-sub">Using numbers to predict the unpredictable game of football.</p>
-  <div class="hero-stats">
+  <img src="logo.jpeg" alt="" aria-hidden="true" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:85%;max-width:700px;opacity:0.06;pointer-events:none;user-select:none;">
+  <h1 style="position:relative;z-index:1">Football Is Our <em>Forte</em></h1>
+  <p class="hero-sub" style="position:relative;z-index:1">Using numbers to predict the unpredictable game of football.</p>
+  <div class="hero-stats" style="position:relative;z-index:1">
     <div class="stat"><div class="stat-val" id="season-ats">63.2%</div><div class="stat-lbl">Season ATS</div></div>
     <div class="stat"><div class="stat-val" id="alltime-ats">—</div><div class="stat-lbl">All Time ATS</div></div>
     <div class="stat"><div class="stat-val" id="season-roi">—</div><div class="stat-lbl">Season ROI</div></div>

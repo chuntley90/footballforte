@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NFL Power Rankings — Football Forte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=IBM+Plex+Mono:wght@400;500&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#f8f8f6;--surface:#ffffff;--surface2:#f2f2f0;--border:#e0e0dc;--text:#0a0a0a;--muted:#888880;--faint:#c8c8c4;--font-head:'Barlow Condensed',sans-serif;--font-body:'Barlow',sans-serif;--font-mono:'IBM Plex Mono',monospace;}
+    body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh}
+    nav{background:rgba(248,248,246,0.97);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:200;backdrop-filter:blur(8px)}
+    .hamburger{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px}
+    .hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px}
+    .sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.2);z-index:300;opacity:0;pointer-events:none;transition:opacity 0.25s}
+    .sidebar-overlay.open{opacity:1;pointer-events:all}
+    .sidebar-drawer{position:fixed;top:0;left:-280px;width:280px;height:100vh;background:var(--surface);border-right:1px solid var(--border);z-index:400;transition:left 0.25s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column}
+    .sidebar-drawer.open{left:0}
+    .sidebar-top{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+    .sidebar-close{background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:18px;color:var(--muted);line-height:1}
+    .sidebar-nav{padding:1rem 0;flex:1}
+    .sidebar-link{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:0.9rem 1.5rem;border-bottom:1px solid var(--border);transition:all 0.15s}
+    .sidebar-link:hover,.sidebar-link.active{color:var(--text);background:var(--bg)}
+    .sidebar-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--faint);padding:1rem 1.5rem 0.5rem}
+    .page-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem}
+    .page-title{font-family:var(--font-head);font-size:52px;font-weight:900;text-transform:uppercase;letter-spacing:-1px;margin-bottom:0.25rem}
+    .page-sub{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:2rem}
+    .sort-tabs{display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:1.5rem;width:fit-content}
+    .sort-tab{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 20px;background:transparent;border:none;border-right:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all 0.15s}
+    .sort-tab:last-child{border-right:none}
+    .sort-tab.active{background:var(--text);color:#fff}
+    .rankings-table{width:100%;border:1px solid var(--border);border-radius:4px;overflow:hidden}
+    .table-header{display:grid;grid-template-columns:40px 1fr 120px 120px 120px;background:var(--surface2);border-bottom:1px solid var(--border)}
+    .th-cell{font-family:var(--font-mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:8px 0;display:flex;align-items:center;justify-content:center}
+    .th-cell:nth-child(1){padding-left:16px;justify-content:flex-start}
+    .th-cell:nth-child(2){padding-left:8px;justify-content:flex-start}
+    .table-row{display:grid;grid-template-columns:40px 1fr 120px 120px 120px;border-bottom:1px solid var(--border);background:var(--surface);transition:background 0.15s;height:44px;text-decoration:none;cursor:pointer}
+    .table-row:last-child{border-bottom:none}
+    .table-row:hover{background:var(--surface2)}
+    .td-cell{display:flex;align-items:center;justify-content:center;height:100%}
+    .td-cell:nth-child(1){padding-left:16px;justify-content:flex-start}
+    .td-cell:nth-child(2){padding-left:8px;justify-content:flex-start;overflow:hidden}
+    .row-rank{font-family:var(--font-head);font-size:20px;font-weight:900;color:var(--text);line-height:1}
+    .row-team{font-family:var(--font-head);font-size:15px;font-weight:700;text-transform:uppercase;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1}
+    .rank-cell-inner{display:flex;align-items:center;justify-content:center;width:100%;gap:0}
+    .rank-num-box{width:32px;display:flex;align-items:center;justify-content:center}
+    .rank-num{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--text);line-height:1}
+    .trend-box{width:32px;display:flex;align-items:center;justify-content:flex-start}
+    .trend{font-family:var(--font-mono);font-size:9px;font-weight:600;line-height:1;white-space:nowrap}
+    .trend.up{color:#2a9d5c}
+    .trend.down{color:#e55}
+    .trend.same{color:var(--faint)}
+    .loading{font-family:var(--font-mono);font-size:11px;color:var(--muted);padding:2rem;text-align:center;letter-spacing:1px;text-transform:uppercase}
+    footer{border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:3rem}
+    .footer-copy{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+    .footer-links{display:flex;gap:1.5rem}
+    .footer-links a{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:1px}
+  </style>
+</head>
+<body>
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+<div class="sidebar-drawer" id="drawer">
+  <div class="sidebar-top">
+    <img src="logo.jpeg" alt="Football Forte" style="height:28px;display:block">
+    <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+  </div>
+  <div class="sidebar-nav">
+    <div class="sidebar-label">Navigation</div>
+    <a href="index.html" class="sidebar-link">Home</a>
+    <a href="articles.html" class="sidebar-link">Articles</a>
+    <a href="mock-draft-simulator.html" class="sidebar-link">Mock Draft Simulator</a>
+    <a href="nfl-power-rankings.html" class="sidebar-link active">NFL Power Rankings</a>
+  </div>
+</div>
+<nav>
+  <div style="display:flex;align-items:center;gap:1rem">
+    <button class="hamburger" onclick="openSidebar()"><span></span><span></span><span></span></button>
+    <img src="logo.jpeg" alt="Football Forte" style="height:36px;display:block">
+  </div>
+</nav>
+<div class="page-wrap">
+  <div class="page-title">NFL Power Rankings</div>
+  <div class="page-sub" id="page-sub">Loading rankings...</div>
+  <div class="sort-tabs">
+    <button class="sort-tab active" onclick="sortBy('overall',this)">Overall</button>
+    <button class="sort-tab" onclick="sortBy('offense',this)">Offense</button>
+    <button class="sort-tab" onclick="sortBy('defense',this)">Defense</button>
+  </div>
+  <div class="rankings-table">
+    <div class="table-header">
+      <div class="th-cell">Rank</div>
+      <div class="th-cell">Team</div>
+      <div class="th-cell">Overall</div>
+      <div class="th-cell">Offense</div>
+      <div class="th-cell">Defense</div>
+    </div>
+    <div id="rankings-body"><div class="loading">Loading...</div></div>
+  </div>
+</div>
+<footer>
+  <div class="footer-copy">© 2025 footballforte.com</div>
+  <div class="footer-links"><a href="index.html">Home</a><a href="articles.html">Articles</a></div>
+</footer>
+<script>
+const SHEET_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vR0sKY8qaTQQFKLNfw4muWFb1ljhxZeCrD9XmHJZ5Y8dV2Vrpufh-cQt6Voyhj4TColptZVlqwypfHd/pub?gid=283281036&single=true&output=csv';
+let teams=[];
+let sortMode='overall';
+function openSidebar(){document.getElementById('drawer').classList.add('open');document.getElementById('overlay').classList.add('open');}
+function closeSidebar(){document.getElementById('drawer').classList.remove('open');document.getElementById('overlay').classList.remove('open');}
+function parseCSV(text){
+  const lines=text.trim().split('\n');
+  const headers=lines[0].split(',').map(h=>h.trim().replace(/"/g,''));
+  return lines.slice(1).map(line=>{
+    const vals=line.split(',').map(v=>v.trim().replace(/"/g,''));
+    const obj={};
+    headers.forEach((h,i)=>obj[h]=vals[i]||'');
+    return obj;
+  }).filter(r=>r['Team']);
+}
+function getTrend(current,previous){
+  const c=parseInt(current),p=parseInt(previous);
+  if(isNaN(c)||isNaN(p)) return '<span class="trend same">—</span>';
+  const diff=p-c;
+  if(diff>0) return `<span class="trend up">▲${diff}</span>`;
+  if(diff<0) return `<span class="trend down">▼${Math.abs(diff)}</span>`;
+  return '<span class="trend same">—</span>';
+}
+function rankCell(num,prev){
+  return `<div class="rank-cell-inner"><div class="rank-num-box"><span class="rank-num">${num||'—'}</span></div><div class="trend-box">${getTrend(num,prev)}</div></div>`;
+}
+function sortBy(mode,btn){
+  sortMode=mode;
+  document.querySelectorAll('.sort-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+function renderTable(){
+  const key=sortMode==='overall'?'Overall Rank':sortMode==='offense'?'Offense Rank':'Defense Rank';
+  const sorted=[...teams].sort((a,b)=>(parseInt(a[key])||99)-(parseInt(b[key])||99));
+  document.getElementById('rankings-body').innerHTML=sorted.map((t,i)=>{
+    const slug=encodeURIComponent(t['Team']);
+    return `<a href="team.html?team=${slug}" class="table-row" style="text-decoration:none">
+      <div class="td-cell"><span class="row-rank">${i+1}</span></div>
+      <div class="td-cell"><span class="row-team">${t['Team']}</span></div>
+      <div class="td-cell">${rankCell(t['Overall Rank'],t['Overall Previous'])}</div>
+      <div class="td-cell">${rankCell(t['Offense Rank'],t['Offense Previous'])}</div>
+      <div class="td-cell">${rankCell(t['Defense Rank'],t['Defense Previous'])}</div>
+    </a>`;
+  }).join('');
+}
+async function init(){
+  try{
+    const resp=await fetch(SHEET_URL);
+    const text=await resp.text();
+    teams=parseCSV(text);
+    document.getElementById('page-sub').textContent='Updated weekly · Click a team for full breakdown';
+    renderTable();
+  }catch(e){
+    document.getElementById('page-sub').textContent='Could not load rankings.';
+    document.getElementById('rankings-body').innerHTML='<div class="loading">Could not load data.</div>';
+  }
+}
+init();
+</script>
+</body>
+</html>
