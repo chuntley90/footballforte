@@ -7,21 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=IBM+Plex+Mono:wght@400;500&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-    :root{
-      --bg:#f8f8f6;--surface:#ffffff;--surface2:#f2f2f0;--border:#e0e0dc;
-      --text:#0a0a0a;--muted:#888880;--faint:#c8c8c4;
-      --font-head:'Barlow Condensed',sans-serif;
-      --font-body:'Barlow',sans-serif;
-      --font-mono:'IBM Plex Mono',monospace;
-    }
+    :root{--bg:#f8f8f6;--surface:#ffffff;--surface2:#f2f2f0;--border:#e0e0dc;--text:#0a0a0a;--muted:#888880;--faint:#c8c8c4;--font-head:'Barlow Condensed',sans-serif;--font-body:'Barlow',sans-serif;--font-mono:'IBM Plex Mono',monospace;}
     body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh}
     nav{background:rgba(248,248,246,0.97);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:200;backdrop-filter:blur(8px)}
-    .nav-right{display:flex;align-items:center;gap:12px}
-    .btn-sm{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:7px 16px;border-radius:3px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block}
-    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);display:flex;flex-direction:column;align-items:center;line-height:1.1}
-    .btn-ghost:hover{border-color:var(--text);color:var(--text)}
-    .btn-solid{background:var(--text);border:1px solid var(--text);color:#fff;font-weight:600}
-    .btn-solid:hover{opacity:0.8}
     .hamburger{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px}
     .hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px}
     .sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.2);z-index:300;opacity:0;pointer-events:none;transition:opacity 0.25s}
@@ -30,7 +18,6 @@
     .sidebar-drawer.open{left:0}
     .sidebar-top{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
     .sidebar-close{background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:18px;color:var(--muted);line-height:1}
-    .sidebar-close:hover{color:var(--text)}
     .sidebar-nav{padding:1rem 0;flex:1}
     .sidebar-link{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:0.9rem 1.5rem;border-bottom:1px solid var(--border);transition:all 0.15s}
     .sidebar-link:hover,.sidebar-link.active{color:var(--text);background:var(--bg)}
@@ -63,20 +50,10 @@
     .footer-links{display:flex;gap:1.5rem}
     .footer-links a{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:1px}
     .footer-links a:hover{color:var(--text)}
-    @media(max-width:600px){.article-card{flex-direction:column}.article-card-right{text-align:center}}
-
-    @media(max-width:768px){
-      nav{padding:0 1rem}
-      .filter-bar{padding:0.75rem 1rem}
-      .sub-filter-bar{padding:0.65rem 1rem;flex-wrap:wrap;gap:0.75rem}
-      .content{padding:1.5rem 1rem}
-      .article-card{flex-direction:column}
-      .article-card-right{text-align:left}
-    }
+    @media(max-width:768px){nav{padding:0 1rem}.filter-bar{padding:0.75rem 1rem}.sub-filter-bar{padding:0.65rem 1rem;flex-wrap:wrap;gap:0.75rem}.content{padding:1.5rem 1rem}.article-card{flex-direction:column}.article-card-right{text-align:left}}
   </style>
 </head>
 <body>
-
 <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 <div class="sidebar-drawer" id="drawer">
   <div class="sidebar-top">
@@ -84,23 +61,18 @@
     <button class="sidebar-close" onclick="closeSidebar()">✕</button>
   </div>
   <div class="sidebar-nav">
-        <div class="sidebar-label">Navigation</div>
+    <div class="sidebar-label">Navigation</div>
     <a href="index.html" class="sidebar-link">Home</a>
-    <a href="articles.html" class="sidebar-link">Articles</a>
+    <a href="articles.html" class="sidebar-link active">Articles</a>
     <a href="mock-draft-simulator.html" class="sidebar-link">Mock Draft Simulator</a>
     <a href="nfl-power-rankings.html" class="sidebar-link">NFL Power Rankings</a>
-  
   </div>
 </div>
-
 <nav>
   <div style="display:flex;align-items:center;gap:1rem">
-    <button class="hamburger" onclick="openSidebar()" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="hamburger" onclick="openSidebar()"><span></span><span></span><span></span></button>
     <img src="logo.jpeg" alt="Football Forte" style="height:36px;display:block">
   </div>
-  
 </nav>
 
 <div class="filter-bar" id="main-filters">
@@ -140,40 +112,106 @@
 <div class="content">
   <div class="articles-grid" id="articles-grid">
 
-    <a href="jeremiyah-love.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="RB" data-score="89.4">
-      <div class="article-card-left">
-        <span class="article-card-tag">Rookie Profile · 2026 · RB</span>
-        <div class="article-card-title">Jeremiyah Love</div>
-        <div class="article-card-excerpt">The best back in this class by a wide margin. Equally adept as a runner and receiver, with advanced pass protection for his age. The clear 1.01.</div>
-      </div>
-      <div class="article-card-right">
-        <div class="article-card-score">89.4</div>
-        <div class="article-card-score-label">Prospect Score</div>
-      </div>
+    <!-- WRs -->
+    <a href="carnell-tate.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="WR" data-score="71.1">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · WR</span><div class="article-card-title">Carnell Tate</div><div class="article-card-excerpt">The WR1 in this class based on projected draft selections. Extremely safe prospect with elite body control and some of the best hands in the class.</div></div>
+      <div class="article-card-right"><div class="article-card-score">71.1</div><div class="article-card-score-label">Prospect Score</div></div>
     </a>
 
-    <a href="mike-washington-jr.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="RB" data-score="41.8">
-      <div class="article-card-left">
-        <span class="article-card-tag">Rookie Profile · 2026 · RB</span>
-        <div class="article-card-title">Mike Washington Jr.</div>
-        <div class="article-card-excerpt">An undeniable physical specimen with a King Henry stylistic comparison, but the model suggests the actual skills may not match the athleticism.</div>
-      </div>
-      <div class="article-card-right">
-        <div class="article-card-score">41.8</div>
-        <div class="article-card-score-label">Prospect Score</div>
-      </div>
+    <a href="makai-lemon.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="WR" data-score="62.1">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · WR</span><div class="article-card-title">Makai Lemon</div><div class="article-card-excerpt">The focal point of Lincoln Riley's offense. Tough as nails over the middle with elite quickness out of breaks despite his smaller frame.</div></div>
+      <div class="article-card-right"><div class="article-card-score">62.1</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <a href="jordyn-tyson.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="WR" data-score="58.8">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · WR</span><div class="article-card-title">Jordyn Tyson</div><div class="article-card-excerpt">The quickest separator in this class with a rare ability to adjust and contort his body in the air. Health history is the primary concern.</div></div>
+      <div class="article-card-right"><div class="article-card-score">58.8</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <a href="kc-concepcion.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="WR" data-score="49.0">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · WR</span><div class="article-card-title">KC Concepcion</div><div class="article-card-excerpt">One of the most improved receivers in this class. Dynamic with the ball in his hands but drops are a real concern heading into the draft.</div></div>
+      <div class="article-card-right"><div class="article-card-score">49.0</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <a href="omar-cooper-jr.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="WR" data-score="49.4">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · WR</span><div class="article-card-title">Omar Cooper Jr.</div><div class="article-card-excerpt">An integral piece of Indiana's championship run. Tons of unrealized potential with elite efficiency metrics but needs refinement across his route tree.</div></div>
+      <div class="article-card-right"><div class="article-card-score">49.4</div><div class="article-card-score-label">Prospect Score</div></div>
     </a>
 
     <a href="elijah-sarratt.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="WR" data-score="43.8">
-      <div class="article-card-left">
-        <span class="article-card-tag">Rookie Profile · 2026 · WR</span>
-        <div class="article-card-title">Elijah Sarratt</div>
-        <div class="article-card-excerpt">The chemistry with Mendoza was something special. Sarratt is exceptionally crafty in the red zone, but will need to prove he can handle press coverage at the next level.</div>
-      </div>
-      <div class="article-card-right">
-        <div class="article-card-score">43.8</div>
-        <div class="article-card-score-label">Prospect Score</div>
-      </div>
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · WR</span><div class="article-card-title">Elijah Sarratt</div><div class="article-card-excerpt">Exceptionally crafty in the red zone with special chemistry alongside Mendoza. Will need to prove he can handle press coverage at the next level.</div></div>
+      <div class="article-card-right"><div class="article-card-score">43.8</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <a href="antonio-williams.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="WR" data-score="39.6">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · WR</span><div class="article-card-title">Antonio Williams</div><div class="article-card-excerpt">May be the only realistic sleeper in this receiver class. Young prospect who made the most of a tough situation at Clemson despite QB inconsistency.</div></div>
+      <div class="article-card-right"><div class="article-card-score">39.6</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <a href="malachi-fields.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="WR" data-score="38.5">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · WR</span><div class="article-card-title">Malachi Fields</div><div class="article-card-excerpt">Notre Dame's most consistent receiver outside of Love. High points the ball well but route running is a significant concern at the next level.</div></div>
+      <div class="article-card-right"><div class="article-card-score">38.5</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <a href="germie-bernard.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="WR" data-score="34.1">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · WR</span><div class="article-card-title">Germie Bernard</div><div class="article-card-excerpt">Stepped up in a big way for Alabama when needed. Versatile and reliable with 80th percentile hands, but age-adjusted production holds back his profile.</div></div>
+      <div class="article-card-right"><div class="article-card-score">34.1</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <a href="ted-hurst.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="WR" data-score="33.4">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · WR</span><div class="article-card-title">Ted Hurst</div><div class="article-card-excerpt">One of the better stories in this class — from zero-star recruit to NFL prospect. Elite athlete still developing the finer details of the position.</div></div>
+      <div class="article-card-right"><div class="article-card-score">33.4</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <a href="chris-bell.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="WR" data-score="32.1">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · WR</span><div class="article-card-title">Chris Bell</div><div class="article-card-excerpt">The ultimate head-versus-heart prospect. Genuinely thrilling athlete but route running is essentially nonexistent, compounded by a torn ACL recovery.</div></div>
+      <div class="article-card-right"><div class="article-card-score">32.1</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <a href="eric-mcalister.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="WR" data-score="26.4">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · WR</span><div class="article-card-title">Eric McAlister</div><div class="article-card-excerpt">A surprising model entry despite little pre-draft buzz. Elite YAC threat but drop rate and a Jones fracture at pro day are significant concerns.</div></div>
+      <div class="article-card-right"><div class="article-card-score">26.4</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <a href="dezhaun-stribling.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="WR" data-score="21.2">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · WR</span><div class="article-card-title">De'Zhaun Stribling</div><div class="article-card-excerpt">Well-traveled prospect who continually moved up in competition. Elite athleticism for his size but poor per route production limits his dynasty upside.</div></div>
+      <div class="article-card-right"><div class="article-card-score">21.2</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <a href="chris-brazzell-ii.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="WR" data-score="35.6">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · WR</span><div class="article-card-title">Chris Brazzell II</div><div class="article-card-excerpt">The best deep threat in this class with elite speed and ability to get off the line. Thin analytical profile beyond size and speed raises red flags.</div></div>
+      <div class="article-card-right"><div class="article-card-score">35.6</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <!-- RBs -->
+    <a href="jeremiyah-love.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="RB" data-score="89.4">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · RB</span><div class="article-card-title">Jeremiyah Love</div><div class="article-card-excerpt">The best back in this class by a wide margin. Equally adept as a runner and receiver with advanced pass protection. The clear 1.01.</div></div>
+      <div class="article-card-right"><div class="article-card-score">89.4</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <a href="jadarian-price.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="RB" data-score="37.8">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · RB</span><div class="article-card-title">Jadarian Price</div><div class="article-card-excerpt">Shifty back who played second fiddle to Love at Notre Dame. Pre-draft model is bearish but projected draft capital keeps him relevant in dynasty.</div></div>
+      <div class="article-card-right"><div class="article-card-score">37.8</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <a href="kaelon-black.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="RB" data-score="17.4">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · RB</span><div class="article-card-title">Kaelon Black</div><div class="article-card-excerpt">Power back who fueled Indiana's championship run. Terrific physicality but ranks among the least elusive backs in the model.</div></div>
+      <div class="article-card-right"><div class="article-card-score">17.4</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <a href="mike-washington-jr.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="RB" data-score="41.8">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · RB</span><div class="article-card-title">Mike Washington Jr.</div><div class="article-card-excerpt">An undeniable physical specimen with a King Henry stylistic comparison, but the model suggests the actual skills may not match the athleticism.</div></div>
+      <div class="article-card-right"><div class="article-card-score">41.8</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <a href="seth-mcgowan.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="RB" data-score="15.7">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · RB</span><div class="article-card-title">Seth McGowan</div><div class="article-card-excerpt">One of the most exciting prospects to watch despite a weak analytical profile. Plays every snap at 100 mph with a relentless will to gain yards.</div></div>
+      <div class="article-card-right"><div class="article-card-score">15.7</div><div class="article-card-score-label">Prospect Score</div></div>
+    </a>
+
+    <a href="jaydn-ott.html" class="article-card" data-cat="rookie-profiles" data-year="2026" data-pos="RB" data-score="25.8">
+      <div class="article-card-left"><span class="article-card-tag">Rookie Profile · 2026 · RB</span><div class="article-card-title">Jaydn Ott</div><div class="article-card-excerpt">A big disappointment in 2025 after injuries derailed his Oklahoma transfer season. Projects best as a third-down back at the next level.</div></div>
+      <div class="article-card-right"><div class="article-card-score">25.8</div><div class="article-card-score-label">Prospect Score</div></div>
     </a>
 
   </div>
@@ -181,65 +219,52 @@
 
 <footer>
   <div class="footer-copy">© 2025 footballforte.com — For entertainment purposes</div>
-  <div class="footer-links">
-    <a href="#">Discord</a>
-    <a href="#">Twitter / X</a>
-    <a href="#">Methodology</a>
-  </div>
+  <div class="footer-links"><a href="#">Discord</a><a href="#">Twitter / X</a><a href="#">Methodology</a></div>
 </footer>
 
 <script>
-  function openSidebar(){
-    document.getElementById('drawer').classList.add('open');
-    document.getElementById('overlay').classList.add('open');
-  }
-  function closeSidebar(){
-    document.getElementById('drawer').classList.remove('open');
-    document.getElementById('overlay').classList.remove('open');
-  }
+  function openSidebar(){document.getElementById('drawer').classList.add('open');document.getElementById('overlay').classList.add('open');}
+  function closeSidebar(){document.getElementById('drawer').classList.remove('open');document.getElementById('overlay').classList.remove('open');}
 
-  const mainBtns = document.querySelectorAll('#main-filters .filter-btn');
-  const subBar = document.getElementById('sub-filters');
-  const yearBtns = document.querySelectorAll('[data-year]');
-  const posBtns = document.querySelectorAll('[data-pos]');
-  const sortBtns = document.querySelectorAll('[data-sort]');
-  const grid = document.getElementById('articles-grid');
+  const mainBtns=document.querySelectorAll('#main-filters .filter-btn');
+  const subBar=document.getElementById('sub-filters');
+  const yearBtns=document.querySelectorAll('[data-year]');
+  const posBtns=document.querySelectorAll('[data-pos]');
+  const sortBtns=document.querySelectorAll('[data-sort]');
+  const grid=document.getElementById('articles-grid');
 
-  let currentCat = 'all';
-  let currentYear = 'all';
-  let currentPos = 'all';
-  let currentSort = 'default';
+  let currentCat='all',currentYear='all',currentPos='all',currentSort='default';
 
   function applyFiltersAndSort(){
-    let cards = Array.from(grid.querySelectorAll('.article-card'));
-    cards.forEach(card => {
-      const catMatch = currentCat === 'all' || card.dataset.cat === currentCat;
-      const yearMatch = currentYear === 'all' || card.dataset.year === currentYear;
-      const posMatch = currentPos === 'all' || card.dataset.pos === currentPos;
-      card.style.display = catMatch && yearMatch && posMatch ? 'flex' : 'none';
+    let cards=Array.from(grid.querySelectorAll('.article-card'));
+    cards.forEach(card=>{
+      const catMatch=currentCat==='all'||card.dataset.cat===currentCat;
+      const yearMatch=currentYear==='all'||card.dataset.year===currentYear;
+      const posMatch=currentPos==='all'||card.dataset.pos===currentPos;
+      card.style.display=catMatch&&yearMatch&&posMatch?'flex':'none';
     });
-    if(currentSort !== 'default'){
-      const visible = cards.filter(c => c.style.display !== 'none');
-      visible.sort((a, b) => {
-        const aScore = parseFloat(a.dataset.score) || 0;
-        const bScore = parseFloat(b.dataset.score) || 0;
-        return currentSort === 'asc' ? aScore - bScore : bScore - aScore;
+    if(currentSort!=='default'){
+      const visible=cards.filter(c=>c.style.display!=='none');
+      visible.sort((a,b)=>{
+        const aScore=parseFloat(a.dataset.score)||0;
+        const bScore=parseFloat(b.dataset.score)||0;
+        return currentSort==='asc'?aScore-bScore:bScore-aScore;
       });
-      visible.forEach(card => grid.appendChild(card));
+      visible.forEach(card=>grid.appendChild(card));
     }
   }
 
-  mainBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      mainBtns.forEach(b => b.classList.remove('active'));
+  mainBtns.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      mainBtns.forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
-      currentCat = btn.dataset.cat;
-      subBar.classList.toggle('visible', currentCat === 'rookie-profiles');
-      if(currentCat !== 'rookie-profiles'){
-        currentYear = 'all'; currentPos = 'all'; currentSort = 'default';
-        yearBtns.forEach(b => b.classList.remove('active'));
-        posBtns.forEach(b => b.classList.remove('active'));
-        sortBtns.forEach(b => b.classList.remove('active'));
+      currentCat=btn.dataset.cat;
+      subBar.classList.toggle('visible',currentCat==='rookie-profiles');
+      if(currentCat!=='rookie-profiles'){
+        currentYear='all';currentPos='all';currentSort='default';
+        yearBtns.forEach(b=>b.classList.remove('active'));
+        posBtns.forEach(b=>b.classList.remove('active'));
+        sortBtns.forEach(b=>b.classList.remove('active'));
         yearBtns[0].classList.add('active');
         posBtns[0].classList.add('active');
         sortBtns[0].classList.add('active');
@@ -248,33 +273,9 @@
     });
   });
 
-  yearBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      yearBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentYear = btn.dataset.year;
-      applyFiltersAndSort();
-    });
-  });
-
-  posBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      posBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentPos = btn.dataset.pos;
-      applyFiltersAndSort();
-    });
-  });
-
-  sortBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      sortBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentSort = btn.dataset.sort;
-      applyFiltersAndSort();
-    });
-  });
+  yearBtns.forEach(btn=>{btn.addEventListener('click',()=>{yearBtns.forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentYear=btn.dataset.year;applyFiltersAndSort();});});
+  posBtns.forEach(btn=>{btn.addEventListener('click',()=>{posBtns.forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentPos=btn.dataset.pos;applyFiltersAndSort();});});
+  sortBtns.forEach(btn=>{btn.addEventListener('click',()=>{sortBtns.forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentSort=btn.dataset.sort;applyFiltersAndSort();});});
 </script>
-
 </body>
 </html>
