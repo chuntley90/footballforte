@@ -112,11 +112,11 @@
   <div class="score-cards">
     <div class="score-card highlight">
       <div class="score-label">Pre-Draft Score</div>
-      <div class="score-val">18.6</div>
+      <div class="score-val" id="pre-draft-score">18.6</div>
     </div>
     <div class="score-card highlight">
       <div class="score-label">Prospect Score</div>
-      <div class="score-val">15.7</div>
+      <div class="score-val" id="prospect-score">15.7</div>
     </div>
   </div>
 
@@ -245,6 +245,31 @@ async function loadSpider(playerName){
 }
 
   loadSpider('Seth McGowan');
+
+
+async function loadScores(playerName){
+  try{
+    const resp = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vR0sKY8qaTQQFKLNfw4muWFb1ljhxZeCrD9XmHJZ5Y8dV2Vrpufh-cQt6Voyhj4TColptZVlqwypfHd/pub?gid=1976706775&single=true&output=csv');
+    const text = await resp.text();
+    const lines = text.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.trim().replace(/"/g,''));
+    const rows = lines.slice(1).map(line => {
+      const vals = line.split(',').map(v => v.trim().replace(/"/g,''));
+      const obj = {};
+      headers.forEach((h,i) => obj[h] = vals[i]||'');
+      return obj;
+    });
+    const player = rows.find(r => r['Player Name'] === playerName);
+    if(player){
+      const pre = player['Pre-Draft Score'];
+      const pro = player['Prospect Score'];
+      if(pre) document.getElementById('pre-draft-score').textContent = pre;
+      if(pro) document.getElementById('prospect-score').textContent = pro;
+    }
+  }catch(e){console.log('Could not load scores');}
+}
+
+  loadScores('Seth McGowan');
 
   function openSidebar(){
     document.getElementById('drawer').classList.add('open');
