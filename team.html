@@ -34,10 +34,10 @@
     .rank-card-num{font-family:var(--font-head);font-size:48px;font-weight:900;line-height:1;color:var(--text)}
     .section-title{font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
     .grades-table{width:100%;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:2.5rem}
-    .grades-header{display:grid;grid-template-columns:1fr 100px 100px 100px;background:var(--surface2);border-bottom:1px solid var(--border)}
+    .grades-header{display:grid;grid-template-columns:1fr 100px;background:var(--surface2);border-bottom:1px solid var(--border)}
     .gh-cell{font-family:var(--font-mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:8px 16px;display:flex;align-items:center;justify-content:center}
     .gh-cell:first-child{justify-content:flex-start}
-    .grade-row{display:grid;grid-template-columns:1fr 100px 100px 100px;border-bottom:1px solid var(--border);background:var(--surface);height:44px;transition:background 0.15s}
+    .grade-row{display:grid;grid-template-columns:1fr 100px;border-bottom:1px solid var(--border);background:var(--surface);height:44px;transition:background 0.15s}
     .grade-row:last-child{border-bottom:none}
     .grade-row:hover{background:var(--surface2)}
     .gc-cell{display:flex;align-items:center;justify-content:center;height:100%;padding:0 16px}
@@ -106,9 +106,7 @@
   <div class="grades-table">
     <div class="grades-header">
       <div class="gh-cell">Position</div>
-      <div class="gh-cell">2025</div>
-      <div class="gh-cell">2026</div>
-      <div class="gh-cell">Change</div>
+      <div class="gh-cell">Grade</div>
     </div>
     <div id="grades-body"><div class="loading">Loading...</div></div>
   </div>
@@ -119,7 +117,6 @@
 </footer>
 <script>
 const RANKINGS_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vR0sKY8qaTQQFKLNfw4muWFb1ljhxZeCrD9XmHJZ5Y8dV2Vrpufh-cQt6Voyhj4TColptZVlqwypfHd/pub?gid=283281036&single=true&output=csv';
-const GRADES_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vR0sKY8qaTQQFKLNfw4muWFb1ljhxZeCrD9XmHJZ5Y8dV2Vrpufh-cQt6Voyhj4TColptZVlqwypfHd/pub?gid=1781569902&single=true&output=csv';
 
 function openSidebar(){document.getElementById('drawer').classList.add('open');document.getElementById('overlay').classList.add('open');}
 function closeSidebar(){document.getElementById('drawer').classList.remove('open');document.getElementById('overlay').classList.remove('open');}
@@ -145,14 +142,15 @@ function getTrendHtml(val2025, val2026){
 }
 
 const positions=[
-  {label:'QB',key2025:'QB 2025',key2026:'QB 2026'},
-  {label:'RB',key2025:'RB 2025',key2026:'RB 2026'},
-  {label:'WR',key2025:'WR 2025',key2026:'WR 2026'},
-  {label:'TE',key2025:'TE 2025',key2026:'TE 2026'},
-  {label:'OL',key2025:'OL 2025',key2026:'OL 2026'},
-  {label:'DL',key2025:'DL 2025',key2026:'DL 2026'},
-  {label:'LB',key2025:'LB 2025',key2026:'LB 2026'},
-  {label:'DB',key2025:'DB 2025',key2026:'DB 2026'},
+  {label:'Offensive Coordinator',key:'Offensive Coordinator Grade'},
+  {label:'Quarterback',key:'Quarterback Grade'},
+  {label:'Wide Receiver/Tight End',key:'Wide Receiver/Tight End Grade'},
+  {label:'Offensive Line',key:'Offensive Line Grade'},
+  {label:'Running Back',key:'Running Back Grade'},
+  {label:'Defensive Coordinator',key:'Defensive Coordinator Grade'},
+  {label:'Defensive Line',key:'Defensive Line Grade'},
+  {label:'Linebacker',key:'Linebacker Grade'},
+  {label:'Secondary',key:'Secondary Grade'},
 ];
 
 async function init(){
@@ -164,34 +162,26 @@ async function init(){
   document.title=decodedTeamName+' — Football Forte';
 
   try{
-    const [rankResp, gradeResp]=await Promise.all([fetch(RANKINGS_URL),fetch(GRADES_URL)]);
-    const rankData=parseCSV(await rankResp.text());
-    const gradeData=parseCSV(await gradeResp.text());
+    const rankResp=await fetch(RANKINGS_URL);
+    const rankData=parseCSV(await rankResp.text()).filter(r=>r['Team']!=='Team');
 
     const teamRank=rankData.find(r=>`${r['City']} ${r['Team']}`.trim()===decodedTeamName);
-    const teamGrade=gradeData.find(r=>r['Team']===decodedTeamName);
 
     if(teamRank){
       document.getElementById('rank-cards').innerHTML=`
         <div class="rank-card"><div class="rank-card-label">Overall</div><div class="rank-card-num">${teamRank['Overall Rank']||'—'}</div></div>
         <div class="rank-card"><div class="rank-card-label">Offense</div><div class="rank-card-num">${teamRank['Overall Offense Rank']||'—'}</div></div>
         <div class="rank-card"><div class="rank-card-label">Defense</div><div class="rank-card-num">${teamRank['Overall Defense Rank']||'—'}</div></div>`;
-    } else {
-      document.getElementById('rank-cards').innerHTML='<div class="loading">No ranking data available for this team yet.</div>';
-    }
 
-    if(teamGrade){
       document.getElementById('grades-body').innerHTML=positions.map(pos=>{
-        const v25=teamGrade[pos.key2025]||'';
-        const v26=teamGrade[pos.key2026]||'';
+        const v=teamRank[pos.key]||'';
         return `<div class="grade-row">
           <div class="gc-cell"><span class="pos-label">${pos.label}</span></div>
-          <div class="gc-cell"><span class="grade-val${!v25?' empty':''}">${v25||'—'}</span></div>
-          <div class="gc-cell"><span class="grade-val${!v26?' empty':''}">${v26||'—'}</span></div>
-          <div class="gc-cell"><div class="change-box"><div class="change-num-box"></div><div class="change-trend-box">${getTrendHtml(v25,v26)}</div></div></div>
+          <div class="gc-cell"><span class="grade-val${!v?' empty':''}">${v||'—'}</span></div>
         </div>`;
       }).join('');
     } else {
+      document.getElementById('rank-cards').innerHTML='<div class="loading">No ranking data available for this team yet.</div>';
       document.getElementById('grades-body').innerHTML='<div class="loading">No grade data available for this team yet.</div>';
     }
   }catch(e){
