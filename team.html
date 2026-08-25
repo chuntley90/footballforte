@@ -32,10 +32,6 @@
     .rank-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.25rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
     .rank-card-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem}
     .rank-card-num{font-family:var(--font-head);font-size:48px;font-weight:900;line-height:1;color:var(--text)}
-    .rank-card-trend{font-family:var(--font-mono);font-size:10px;font-weight:600;margin-top:4px}
-    .trend-up{color:#2a9d5c}
-    .trend-down{color:#e55}
-    .trend-same{color:var(--faint)}
     .section-title{font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
     .grades-table{width:100%;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:2.5rem}
     .grades-header{display:grid;grid-template-columns:1fr 100px 100px 100px;background:var(--surface2);border-bottom:1px solid var(--border)}
@@ -148,15 +144,6 @@ function getTrendHtml(val2025, val2026){
   return '<span class="change-trend same">—</span>';
 }
 
-function rankCardTrend(current, previous){
-  const c=parseInt(current), p=parseInt(previous);
-  if(isNaN(c)||isNaN(p)) return '<span class="rank-card-trend trend-same">—</span>';
-  const diff=p-c;
-  if(diff>0) return `<span class="rank-card-trend trend-up">▲${diff}</span>`;
-  if(diff<0) return `<span class="rank-card-trend trend-down">▼${Math.abs(diff)}</span>`;
-  return '<span class="rank-card-trend trend-same">—</span>';
-}
-
 const positions=[
   {label:'QB',key2025:'QB 2025',key2026:'QB 2026'},
   {label:'RB',key2025:'RB 2025',key2026:'RB 2026'},
@@ -172,26 +159,27 @@ async function init(){
   const params=new URLSearchParams(window.location.search);
   const teamName=params.get('team');
   if(!teamName){document.getElementById('team-name').textContent='Team not found';return;}
-  document.getElementById('team-name').textContent=decodeURIComponent(teamName);
-  document.title=decodeURIComponent(teamName)+' — Football Forte';
+  const decodedTeamName=decodeURIComponent(teamName);
+  document.getElementById('team-name').textContent=decodedTeamName;
+  document.title=decodedTeamName+' — Football Forte';
 
   try{
     const [rankResp, gradeResp]=await Promise.all([fetch(RANKINGS_URL),fetch(GRADES_URL)]);
     const rankData=parseCSV(await rankResp.text());
     const gradeData=parseCSV(await gradeResp.text());
 
-    const teamRank=rankData.find(r=>r['Team']===decodeURIComponent(teamName));
-    const teamGrade=gradeData.find(r=>r['Team']===decodeURIComponent(teamName));
+    const teamRank=rankData.find(r=>`${r['City']} ${r['Team']}`.trim()===decodedTeamName);
+    const teamGrade=gradeData.find(r=>r['Team']===decodedTeamName);
 
-    // Render rank cards
     if(teamRank){
       document.getElementById('rank-cards').innerHTML=`
-        <div class="rank-card"><div class="rank-card-label">Overall</div><div class="rank-card-num">${teamRank['Overall Rank']||'—'}</div>${rankCardTrend(teamRank['Overall Rank'],teamRank['Overall Previous'])}</div>
-        <div class="rank-card"><div class="rank-card-label">Offense</div><div class="rank-card-num">${teamRank['Offense Rank']||'—'}</div>${rankCardTrend(teamRank['Offense Rank'],teamRank['Offense Previous'])}</div>
-        <div class="rank-card"><div class="rank-card-label">Defense</div><div class="rank-card-num">${teamRank['Defense Rank']||'—'}</div>${rankCardTrend(teamRank['Defense Rank'],teamRank['Defense Previous'])}</div>`;
+        <div class="rank-card"><div class="rank-card-label">Overall</div><div class="rank-card-num">${teamRank['Overall Rank']||'—'}</div></div>
+        <div class="rank-card"><div class="rank-card-label">Offense</div><div class="rank-card-num">${teamRank['Overall Offense Rank']||'—'}</div></div>
+        <div class="rank-card"><div class="rank-card-label">Defense</div><div class="rank-card-num">${teamRank['Overall Defense Rank']||'—'}</div></div>`;
+    } else {
+      document.getElementById('rank-cards').innerHTML='<div class="loading">No ranking data available for this team yet.</div>';
     }
 
-    // Render positional grades
     if(teamGrade){
       document.getElementById('grades-body').innerHTML=positions.map(pos=>{
         const v25=teamGrade[pos.key2025]||'';
